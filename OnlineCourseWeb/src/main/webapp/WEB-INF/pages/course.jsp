@@ -1,14 +1,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-
 <div class="content-wrapper" style="overflow-y: auto;">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="m-0">Courses</h1>
+                    <h1 class="ml-5"><b>Courses</b></h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -22,10 +21,13 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
+    <div class="card-body clearfix">
+        <a href="<c:url value='/courses/add-up'/>" class="btn btn-sm btn-info float-right mr-5">Add Course</a>
+    </div>
     <div class="card container">
         <div class="card-header border-transparent">
             <h3 class="card-title">Courses</h3>
-
+            
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
@@ -47,6 +49,7 @@
                             <th>Course Type</th>
                             <th>Price</th>
                             <th>Instructor</th>
+                            <th></th> <!-- Thêm c?t Actions -->
                         </tr>
                     </thead>
                     <tbody>
@@ -70,7 +73,12 @@
                                     <fmt:formatNumber value="${course.price}" type="number" groupingUsed="true" />
                                     VND
                                 </td>
-                                <td>${course.instructorId} </td>
+                                <td>${course.instructorId.userId.lastName} ${course.instructorId.userId.firstName} </td>
+                                <td>
+                                    <a href="#" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="#" class="text-success mr-2" title="View"><i class="fas fa-eye"></i></a>
+                                    <a href="#" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
+                                </td>
                             </tr>
                         </c:forEach>
                     </tbody>
@@ -78,12 +86,6 @@
             </div>
             <!-- /.table-responsive -->
         </div>
-        <!-- /.card-body -->
-        <div class="card-footer clearfix">
-            <a href="javascript:void(0)" class="btn btn-sm btn-info float-left">Place New Order</a>
-            <a href="javascript:void(0)" class="btn btn-sm btn-secondary float-right">View All Orders</a>
-        </div>
-        <!-- /.card-footer -->
     </div>
     <!-- /.content -->
 </div>

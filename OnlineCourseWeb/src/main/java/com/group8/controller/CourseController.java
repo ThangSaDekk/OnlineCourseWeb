@@ -4,12 +4,16 @@
  */
 package com.group8.controller;
 
+import com.group8.dto.AddCourseDTO;
+import com.group8.dto.CourseDTO;
 import com.group8.service.CategoryService;
 import com.group8.service.CourseService;
 import java.util.Map;
+import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,5 +42,18 @@ public class CourseController {
         model.addAttribute("courses", this.courseService.getCourse(params));
         
         return "course";
+    }
+    
+    @RequestMapping("/courses/add-up")
+    public String courseAddOrUpdateView(Model model, @ModelAttribute(value="course") @Valid AddCourseDTO c, BindingResult rs) {
+        if(rs.hasErrors())
+            return "add-up-course";
+        try{
+            this.courseService.addOrUpCourse(c);
+        }catch (Exception ex){
+            model.addAttribute("errMsg", ex.getMessage());
+        }
+        
+        return "add-up-course";
     }
 }
