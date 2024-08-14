@@ -4,7 +4,7 @@
  */
 package com.group8.controller;
 
-import com.group8.pojo.Category;
+import com.group8.dto.CategoryDTO;
 import com.group8.service.CategoryService;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +29,7 @@ public class ApiCategoryController {
     private CategoryService cateService;
     
     @GetMapping("/categories")
-    public ResponseEntity<List<Category>> list() {
-        return new ResponseEntity<>(this.cateService.getCates(), HttpStatus.OK);
+    public ResponseEntity<List<CategoryDTO>> list() {
+        return new ResponseEntity<>(this.cateService.getCatesDTO(), HttpStatus.OK);
     }
 }

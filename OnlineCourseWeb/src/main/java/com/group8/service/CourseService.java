@@ -6,6 +6,7 @@ package com.group8.service;
 
 import com.group8.dto.AddCourseDTO;
 import com.group8.dto.CourseDTO;
+import com.group8.pojo.Course;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +15,8 @@ import java.util.Map;
  * @author thang
  */
 public interface CourseService {
-    List<CourseDTO> getCourse(Map<String, String> params);
-    void addOrUpCourse(AddCourseDTO addCourseDTO);
+    List<CourseDTO> getCourseDTO(Map<String, String> params);
+    List<Course> getCourse(Map<String, String> params);
+    void addOrUpCourse(Course course);
+    AddCourseDTO getCourseById(int id);
 }

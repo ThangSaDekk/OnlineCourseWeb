@@ -63,7 +63,7 @@ public class CourseRepositoryImpl implements CourseRepository {
                 Predicate p4 = b.equal(root.get("categoryId"), Integer.parseInt(cateId));
                 predicates.add(p4);
             }
-            q.where(predicates.toArray(new Predicate[0]));
+            q.where(predicates.toArray(Predicate[]::new));
         }
         Query query = s.createQuery(q);
 
@@ -91,6 +91,10 @@ public class CourseRepositoryImpl implements CourseRepository {
         }
     }
 
-   
+    @Override
+    public Course getCourseById(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(Course.class, id);
+    }
 
 }

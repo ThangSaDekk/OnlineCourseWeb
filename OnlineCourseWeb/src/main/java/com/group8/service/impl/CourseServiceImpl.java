@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.group8.service.impl;
 
 import com.cloudinary.Cloudinary;
@@ -22,49 +18,65 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-/**
- *
- * @author thang
- */
 @Service
 public class CourseServiceImpl implements CourseService {
 
     @Autowired
     private CourseRepository courseRepo;
+
     @Autowired
     private ModelMapper modelMapper;
+
     @Autowired
     private Cloudinary cloudinary;
 
     @Override
-    public List<CourseDTO> getCourse(Map<String, String> params) {
+    public List<CourseDTO> getCourseDTO(Map<String, String> params) {
         List<Course> courses = this.courseRepo.getCourse(params);
         return courses.stream()
-                .map(c -> {
-                    CourseDTO courseDTO = new CourseDTO();
-                    modelMapper.map(c, courseDTO);
-                    return courseDTO;
-                })
+                .map(c -> modelMapper.map(c, CourseDTO.class))
                 .collect(Collectors.toList());
     }
 
     @Override
-    public void addOrUpCourse(AddCourseDTO addCourseDTO) {
-        if (!addCourseDTO.getFile().isEmpty()) {
+    public void addOrUpCourse(Course course) {
+        if (!course.getFile().isEmpty()) {
             try {
-                Map res = this.cloudinary.uploader().upload(addCourseDTO.getFile().getBytes(),
+                Map<String, Object> res = this.cloudinary.uploader().upload(course.getFile().getBytes(),
                         ObjectUtils.asMap("resource_type", "auto"));
-
-                addCourseDTO.setImg(res.get("secure_url").toString());
+                course.setImg(res.get("secure_url").toString());
             } catch (IOException ex) {
-                Logger.getLogger(CourseServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CourseServiceImpl.class.getName()).log(Level.SEVERE, "Upload file thất bại", ex);
+                throw new RuntimeException("Không thể upload hình ảnh. Vui lòng thử lại.");
             }
         }
-        Course course = new Course();
-        modelMapper.map(addCourseDTO, course);
         course.setCreatedDate(new Date());
         course.setUpdatedDate(new Date());
         this.courseRepo.addOrUpCourse(course);
     }
+
+    @Override
+    public List<Course> getCourse(Map<String, String> params) {
+        return this.courseRepo.getCourse(params);
+    }
+
+    @Override
+    public AddCourseDTO getCourseById(int id) {
+
+        Course course = this.courseRepo.getCourseById(id);
+        AddCourseDTO addCourseDTO = new AddCourseDTO();
         
+        addCourseDTO.setId(course.getId());
+        addCourseDTO.setTitle(course.getTitle());
+        addCourseDTO.setDescription(course.getDescription());
+        addCourseDTO.setTimeExperted(course.getTimeExperted());
+        addCourseDTO.setPrice(course.getPrice());
+        addCourseDTO.setStatus(course.getStatus().name());
+        addCourseDTO.setCourseType(course.getCourseType().name());
+        addCourseDTO.setCategoryId(course.getCategoryId().getId());
+        addCourseDTO.setInstructorId(course.getInstructorId().getId());
+        addCourseDTO.setImg(course.getImg());
+        return addCourseDTO;
+        
+    }
 }

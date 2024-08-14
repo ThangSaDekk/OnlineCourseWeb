@@ -4,6 +4,7 @@
  */
 package com.group8.service;
 
+import com.group8.dto.CategoryDTO;
 import com.group8.pojo.Category;
 import java.util.List;
 
@@ -13,5 +14,6 @@ import java.util.List;
  * 
  */
 public interface CategoryService {
+    List<CategoryDTO> getCatesDTO();
     List<Category> getCates();
 }

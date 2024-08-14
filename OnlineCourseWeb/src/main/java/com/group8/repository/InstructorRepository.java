@@ -4,16 +4,13 @@
  */
 package com.group8.repository;
 
-import com.group8.pojo.Course;
+import com.group8.pojo.Instructor;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
  * @author thang
  */
-public interface CourseRepository {
-    List<Course> getCourse(Map<String, String> params);
-    void addOrUpCourse(Course course);
-    Course getCourseById(int id);
+public interface InstructorRepository {
+    List<Instructor> getAllInstructors();
 }

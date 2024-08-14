@@ -4,9 +4,6 @@
  */
 package com.group8.dto;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.group8.pojo.CourseStatus;
-import com.group8.pojo.CourseType;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -15,21 +12,16 @@ import org.springframework.web.multipart.MultipartFile;
  * @author thang
  */
 @Data
-@JsonInclude(JsonInclude.Include.NON_NULL)
 public class AddCourseDTO {
-//     private Integer id;
+    private Integer id;
     private String title;
     private String description;
     private String timeExperted;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-//    private Date createdDate;
-//    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
-//    private Date updatedDate;
-    private long price;
-    private CourseStatus status;
-    private CourseType courseType;
-    private CategoryDTO categoryId;
-    private InstructorDTO instructorId;
-    private String img;
+    private Long price;
+    private String status; // sử dụng String để dễ dàng nhận từ form
+    private String courseType; // sử dụng String để dễ dàng nhận từ form
+    private Integer categoryId;
+    private Integer instructorId;
     private MultipartFile file;
+    private String img;
 }

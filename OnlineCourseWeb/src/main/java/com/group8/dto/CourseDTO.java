@@ -1,15 +1,10 @@
 package com.group8.dto;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.group8.pojo.Category;
 import com.group8.pojo.CourseStatus;
 import com.group8.pojo.CourseType;
-import com.group8.pojo.Instructor;
 import java.util.Date;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 

@@ -22,7 +22,7 @@
 
     <!-- Main content -->
     <div class="card-body clearfix">
-        <a href="<c:url value='/courses/add-up'/>" class="btn btn-sm btn-info float-right mr-5">Add Course</a>
+        <a href="<c:url value="/courses/add-up"/>" class="btn btn-sm btn-info float-right mr-5">Add Course</a>
     </div>
     <div class="card container">
         <div class="card-header border-transparent">
@@ -75,7 +75,7 @@
                                 </td>
                                 <td>${course.instructorId.userId.lastName} ${course.instructorId.userId.firstName} </td>
                                 <td>
-                                    <a href="#" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="<c:url value="/courses/add-up/${course.id}"/>" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
                                     <a href="#" class="text-success mr-2" title="View"><i class="fas fa-eye"></i></a>
                                     <a href="#" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
                                 </td>

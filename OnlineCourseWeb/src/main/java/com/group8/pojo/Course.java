@@ -4,6 +4,7 @@
  */
 package com.group8.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import javax.persistence.Basic;
@@ -82,13 +83,11 @@ public class Course implements Serializable {
     private long price;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 8)
     @Enumerated(EnumType.STRING)
     @Column(name = "status")
     private CourseStatus status;
     @Basic(optional = false)
     @NotNull
-    @Size(min = 1, max = 6)
     @Enumerated(EnumType.STRING)
     @Column(name = "course_type")
     private CourseType courseType;
@@ -97,9 +96,11 @@ public class Course implements Serializable {
     private String img;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Category categoryId;
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
+    @JsonIgnore
     private Instructor instructorId;
 
     @Transient

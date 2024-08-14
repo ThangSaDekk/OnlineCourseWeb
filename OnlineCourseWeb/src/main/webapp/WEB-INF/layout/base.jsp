@@ -70,7 +70,7 @@
         <script src="<c:url value='/dist/js/pages/dashboard.js' />"></script>
         <script>
             // Thiết lập thời gian không hoạt động tối đa (15 phút)
-            const MAX_INACTIVE_TIME = 0.5 * 60 * 1000; // 15 phút
+            const MAX_INACTIVE_TIME = 2 * 60 * 1000; // 15 phút
             let lastActivityTime = Date.now();
 
             // Cập nhật thời gian hoạt động cuối cùng khi người dùng thực hiện một hành động
@@ -90,7 +90,7 @@
                     window.location.href = "<c:url value="/login"/>";
                 } else {
                     // Thiết lập lại thời gian kiểm tra sau 1 phút
-                    setTimeout(checkInactivity, 0.5 * 60 * 1000);
+                    setTimeout(checkInactivity, 2 * 60 * 1000);
                 }
             }
 
@@ -100,7 +100,7 @@
             window.addEventListener('click', updateLastActivityTime);
 
             // Bắt đầu kiểm tra thời gian không hoạt động sau 1 phút
-            setTimeout(checkInactivity, 0.5 * 60 * 1000);
+            setTimeout(checkInactivity, 2 * 60 * 1000);
 
         </script>
 
