@@ -224,8 +224,7 @@ public class User implements Serializable {
     public void setUpdatedDate(Date updatedDate) {
         this.updatedDate = updatedDate;
     }
-    
-    
+
     @XmlTransient
     @JsonIgnore
     public Instructor getInstructor() {
@@ -234,6 +233,11 @@ public class User implements Serializable {
 
     public void setInstructor(Instructor instructor) {
         this.instructor = instructor;
+    }
+
+    public String getFullName() {
+        String s = this.lastName + " " + this.firstName;
+        return s;
     }
 
     @Override
@@ -260,5 +264,5 @@ public class User implements Serializable {
     public String toString() {
         return "com.group8.pojo.User[ id=" + id + " ]";
     }
-    
+
 }

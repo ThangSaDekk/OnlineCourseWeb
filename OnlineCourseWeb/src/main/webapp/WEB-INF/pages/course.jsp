@@ -7,7 +7,7 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
-                    <h1 class="ml-5"><b>Courses</b></h1>
+                    <h1 class="ml-5"></h1>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
@@ -22,18 +22,17 @@
 
     <!-- Main content -->
     <div class="card-body clearfix">
-        <a href="<c:url value="/courses/add-up"/>" class="btn btn-sm btn-info float-right mr-5">Add Course</a>
+        <a href="<c:url value='/courses/add-up'/>" class="btn btn-lg btn-success float-right mr-5 " style="font-size: 1.25rem;">
+            <i class="fas fa-plus p-2">    </i>
+        </a>
     </div>
     <div class="card container">
         <div class="card-header border-transparent">
             <h3 class="card-title">Courses</h3>
-            
+
             <div class="card-tools">
                 <button type="button" class="btn btn-tool" data-card-widget="collapse">
                     <i class="fas fa-minus"></i>
-                </button>
-                <button type="button" class="btn btn-tool" data-card-widget="remove">
-                    <i class="fas fa-times"></i>
                 </button>
             </div>
         </div>
@@ -54,9 +53,9 @@
                     </thead>
                     <tbody>
                         <!-- Duy?t qua danh sách các khóa h?c -->
-                        <c:forEach var="course" items="${courses}">
-                            <tr>
-                                <td><a href="#">${course.id}</a></td>
+                        <c:forEach var="course" items="${courses}"  varStatus="status">
+                            <tr id="course${course.id}">
+                                <td>${status.index + 1}</td>
                                 <td>${course.title}</td>
                                 <td>
                                     <c:choose>
@@ -77,7 +76,9 @@
                                 <td>
                                     <a href="<c:url value="/courses/add-up/${course.id}"/>" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
                                     <a href="#" class="text-success mr-2" title="View"><i class="fas fa-eye"></i></a>
-                                    <a href="#" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
+                                        <c:url value="/api/courses/${course.id}/" var="cD" />
+                                    <c:url value="course${course.id}" var="cE" />
+                                    <a href="#" onclick="deleteCourse('${cD}','${cE}')" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
                                 </td>
                             </tr>
                         </c:forEach>
@@ -89,3 +90,4 @@
     </div>
     <!-- /.content -->
 </div>
+

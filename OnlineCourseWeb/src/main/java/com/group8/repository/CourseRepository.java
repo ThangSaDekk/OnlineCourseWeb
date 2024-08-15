@@ -13,7 +13,13 @@ import java.util.Map;
  * @author thang
  */
 public interface CourseRepository {
+
     List<Course> getCourse(Map<String, String> params);
+
     void addOrUpCourse(Course course);
+
     Course getCourseById(int id);
+
+    void deleteCourse(int id);
+
 }
