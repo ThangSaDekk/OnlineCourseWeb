@@ -15,6 +15,7 @@ import com.group8.service.CourseService;
 import com.group8.service.InstructorService;
 import java.util.Map;
 import javax.validation.Valid;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -98,7 +99,7 @@ public class CourseController {
             this.courseService.addOrUpCourse(course);
             redirectAttributes.addFlashAttribute("successMsg", "Khóa học đã được lưu thành công.");
             return "redirect:/courses";  // Chuyển hướng đến danh sách khóa học
-        } catch (Exception ex) {
+        } catch (StaleObjectStateException ex) {
             redirectAttributes.addFlashAttribute("errMsg", ex.getMessage());
             return "redirect:/courses/add-up";  // Chuyển hướng lại trang thêm/sửa khóa học
         }

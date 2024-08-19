@@ -20,10 +20,13 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
+import static org.apache.velocity.texen.util.FileUtil.file;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -47,6 +50,14 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
+    
+    public MultipartFile getFile() {
+        return file;
+    }
+    
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -108,6 +119,8 @@ public class User implements Serializable {
     private Date updatedDate;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
     private Instructor instructor;
+    @Transient
+    private MultipartFile file;
 
     public User() {
     }

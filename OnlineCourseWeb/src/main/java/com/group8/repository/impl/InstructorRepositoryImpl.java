@@ -7,6 +7,7 @@ package com.group8.repository.impl;
 import com.group8.pojo.Instructor;
 import com.group8.repository.InstructorRepository;
 import java.util.List;
+import java.util.Map;
 import javax.persistence.Query;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,5 +32,20 @@ public class InstructorRepositoryImpl implements InstructorRepository{
         Query q = s.createNamedQuery("Instructor.findAll");
         return q.getResultList();
     }
+    public Instructor addInstructor(Instructor i){
+        Session s = this.factory.getObject().getCurrentSession();
+        if(i.getId()!=null){
+            s.update(i);
+        }else{
+           s.save(i); 
+        }   
+        return i;
+    }
+    @Override
+    public Instructor getInstructorById(int id){
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(Instructor.class, id);
+    }
+
     
 }
