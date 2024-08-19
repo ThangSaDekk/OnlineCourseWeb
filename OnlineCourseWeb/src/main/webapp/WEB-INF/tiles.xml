@@ -22,7 +22,10 @@
         <put-attribute name="title" value="Danh sách khóa học" />
         <put-attribute name="content" value="/WEB-INF/pages/course.jsp" />
     </definition>
-    
+    <definition name="enrollment" extends="baseLayout">
+        <put-attribute name="titles" value="Danh sách đăng ký khóa học"/>
+        <put-attribute name="content" value="/WEB-INF/pages/enrollment.jsp"/>
+    </definition>
     
     <definition name="home" extends="baseLayout">
         <put-attribute name="title" value="Trang chủ" />

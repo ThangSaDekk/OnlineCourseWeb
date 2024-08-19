@@ -7,6 +7,7 @@ package com.group8.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +17,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -47,6 +49,9 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Enrollment> enrollmentSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -263,6 +268,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.group8.pojo.User[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Set<Enrollment> getEnrollmentSet() {
+        return enrollmentSet;
+    }
+
+    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
+        this.enrollmentSet = enrollmentSet;
     }
 
 }

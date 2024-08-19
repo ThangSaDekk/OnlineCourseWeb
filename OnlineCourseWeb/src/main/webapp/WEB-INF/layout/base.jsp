@@ -24,6 +24,8 @@
         <link rel="stylesheet" href="<c:url value='/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' />">
         <link rel="stylesheet" href="<c:url value='/plugins/daterangepicker/daterangepicker.css' />">
         <link rel="stylesheet" href="<c:url value='/plugins/summernote/summernote-bs4.min.css' />">
+        <link rel="stylesheet" href="<c:url value='/plugins/select2/css/select2.min.css'/>">
+
     </head>
     <body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">  
         <div class="wrapper">    
