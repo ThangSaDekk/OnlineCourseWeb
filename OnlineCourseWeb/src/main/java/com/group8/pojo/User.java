@@ -51,13 +51,6 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
     
-    public MultipartFile getFile() {
-        return file;
-    }
-    
-    public void setFile(MultipartFile file) {
-        this.file = file;
-    }
 
     private static final long serialVersionUID = 1L;
     @Id

@@ -46,10 +46,10 @@ public class InvoiceServiceImpl implements InvoiceService {
         for (Enrollment enrollment : enrollments) {
             EnrollmentDTO enrollmentDTO = new EnrollmentDTO();
             enrollmentDTO.setId(enrollment.getId());
-            enrollmentDTO.setInvoiceNumber(invoice.getInvoiceNumber());
+            enrollmentDTO.setInvoiceNumber(invoice.getReferenceCode());
             enrollmentDTO.setPayerName(invoice.getPayerName());
             enrollmentDTO.setPayerEmail(invoice.getPayerEmail());
-            enrollmentDTO.setTotalAmount(invoice.getTotalAmount());
+//            enrollmentDTO.setTotalAmount(invoice.getTotalAmount());
             enrollmentDTO.setUserId(enrollment.getUserId());
             enrollmentDTO.setFirstName(enrollment.getUserId().getFirstName());
             enrollmentDTO.setPayerPhone(invoice.getPayerPhone());

@@ -117,7 +117,7 @@ public class UserRepositoryImpl implements UserRepository {
         return (long) query.getSingleResult();
     }
 
-    }
+    
     
     @Override
     public void changePassword(User user) {
