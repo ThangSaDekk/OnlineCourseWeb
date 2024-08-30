@@ -123,6 +123,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public long countUsers(Map<String, String> params) {
+        return this.userRepo.countUsers(params);
+    }
+
+    @Override
     public AddUserDTO getUserById(Integer id) {
         User user = this.userRepo.getUserByID(id);
         AddUserDTO addUserDTO = new AddUserDTO();

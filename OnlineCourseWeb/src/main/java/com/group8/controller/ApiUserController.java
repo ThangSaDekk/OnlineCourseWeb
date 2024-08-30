@@ -58,10 +58,10 @@ public class ApiUserController {
         return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/users",
-            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
-            produces = {MediaType.APPLICATION_JSON_VALUE})
-    @CrossOrigin
+    @PostMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
+//            consumes = {MediaType.APPLICATION_JSON_VALUE},
+//            produces = {MediaType.APPLICATION_JSON_VALUE}
+
     public ResponseEntity<UserDTO> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
         UserDTO userDTO = this.userService.addUser(params, avatar);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);

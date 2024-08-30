@@ -4,8 +4,6 @@
 <%@taglib prefix="tiles" uri="http://tiles.apache.org/tags-tiles" %>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
-
-
 <!DOCTYPE html>
 <html>
     <head>
@@ -24,11 +22,22 @@
         <link rel="stylesheet" href="<c:url value='/plugins/overlayScrollbars/css/OverlayScrollbars.min.css' />">
         <link rel="stylesheet" href="<c:url value='/plugins/daterangepicker/daterangepicker.css' />">
         <link rel="stylesheet" href="<c:url value='/plugins/summernote/summernote-bs4.min.css' />">
+        <link rel="stylesheet" href="<c:url value='/plugins/select2/css/select2.min.css'/>">
+        <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
+        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
+       <script src="https://cdn.ckeditor.com/ckfinder/ckfinder.js"></script>
+    
+        
+
+
+
     </head>
     <body class="hold-transition sidebar-mini layout-fixed" data-panel-auto-height-mode="height">  
         <div class="wrapper">    
             <tiles:insertAttribute name="header" />
-
             <tiles:insertAttribute name="content" />
             <tiles:insertAttribute name="footer" />
 
@@ -73,6 +82,8 @@
         <script src="<c:url value='/dist/js/demo.js' />"></script>
         <!-- AdminLTE dashboard demo (This is only for demo purposes) -->
         <script src="<c:url value='/dist/js/pages/dashboard.js' />"></script>
+
+        <script src="<c:url value='/js/custom-scripts.js' />"></script>
         <!-- function to logout when admin don't use -->
         <script>
 
@@ -109,7 +120,6 @@
 // Bắt đầu kiểm tra thời gian không hoạt động sau 1 phút
             setTimeout(checkInactivity, 2 * 60 * 1000);
         </script>
-        <!-- function to delete course -->
         <script>
             function deleteCourse(endpoint, courseId) {
                 var username = '<sec:authentication property="principal.username"/>';
@@ -210,7 +220,6 @@
                 });
             }
         </script>
-
 
     </body>
 </html>

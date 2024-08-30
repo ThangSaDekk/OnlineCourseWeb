@@ -4,19 +4,27 @@
  */
 package com.group8.controller;
 
+import com.group8.dto.AddContentDTO;
 import com.group8.dto.AddCourseDTO;
 import com.group8.pojo.Category;
 import com.group8.pojo.Course;
-import com.group8.pojo.CourseStatus;
-import com.group8.pojo.CourseType;
+import com.group8.pojo.Enum.CourseStatus;
+import com.group8.pojo.Enum.CourseType;
+import com.group8.pojo.Enum.EnrollmentStatus;
+import com.group8.pojo.Enum.EntityType;
 import com.group8.pojo.Instructor;
 import com.group8.service.CategoryService;
+import com.group8.service.ContentService;
 import com.group8.service.CourseService;
 import com.group8.service.InstructorService;
+import com.group8.service.StatsSerivce;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -43,6 +51,13 @@ public class CourseController {
     private CategoryService categoryService;
     @Autowired
     private InstructorService instructorService;
+    @Autowired
+    private ContentService contentService;
+    @Autowired
+    private Environment env;
+    @Autowired
+    private StatsSerivce statsService;
+ 
 
     @ModelAttribute
     public void commAttrs(Model model) {
@@ -50,22 +65,41 @@ public class CourseController {
         model.addAttribute("instructors", instructorService.getAllInstructors());
         model.addAttribute("courseStatusList", CourseStatus.values());
         model.addAttribute("courseTypesList", CourseType.values());
+        model.addAttribute("enrolllmentStatusList", EnrollmentStatus.values());
+        model.addAttribute("entityTypeList", EntityType.values());
     }
 
     @RequestMapping("/courses")
     public String courseView(Model model, @RequestParam Map<String, String> params) {
-        model.addAttribute("courses", this.courseService.getCourse(params));
-        
+        if (params.get("page") == null) {
+            params.put("page", "1");
+        }
+        List<Course> courses = this.courseService.getCourse(params);
+
+        int total = this.courseService.getCourse(null).size();
+
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            if (!entry.getKey().equals("page") && entry.getValue() != null && !entry.getValue().isEmpty()) {
+                params.remove("page");
+                total = this.courseService.getCourse(params).size();
+                break;
+            }
+        }
+        int PAGE_MAX = Integer.parseInt(env.getProperty("page.size.course"));
+
+        int pageTotal = (int) Math.ceil((double) total / PAGE_MAX);
+
+        model.addAttribute("courses", courses);
+        model.addAttribute("pageTotal", pageTotal); // gửi biến tổng trang để phân trang
         return "course";
     }
-    
-    
-    
+
     /**
-     * 
+     *
      * Hàm để gửi đối tượng addCourseDTO lên trang thêm khóa học
+     *
      * @param model
-     * @return 
+     * @return
      */
     @GetMapping("/courses/add-up")
     public String createView(Model model) {
@@ -77,7 +111,7 @@ public class CourseController {
     public String courseAddOrUpdateView(@ModelAttribute(value = "addCourseDTO") @Valid AddCourseDTO addCourseDTO,
             BindingResult rs,
             RedirectAttributes redirectAttributes) {
-        System.out.println("Hello" + addCourseDTO);
+        System.out.println("Hello recieve: " + addCourseDTO);
         if (rs.hasErrors()) {
             return "add-up-course";
         }
@@ -105,11 +139,72 @@ public class CourseController {
         }
     }
 
-    @GetMapping("/courses/add-up/{courseId}")
-    public String detailsView(Model model, @PathVariable(value = "courseId") int id) {
+    @GetMapping("/courses/{courseId}/add-up")
+    public String updatesView(Model model, @PathVariable(value = "courseId") int id) {
         model.addAttribute("addCourseDTO", this.courseService.getCourseById(id));
-        System.out.println("Hello" + this.courseService.getCourseById(id));
+//        System.out.println("Hello update: " + this.courseService.getCourseById(id));
 
         return "add-up-course";
     }
+
+    @GetMapping("/courses/{courseId}/content")
+    public String contentView(Model model, @PathVariable(value = "courseId") int id, @RequestParam Map<String, String> params) {
+        model.addAttribute("contents", this.contentService.getContentDTOsByCourseId(id, params));
+        model.addAttribute("statsContent", this.statsService.statsContentOfCourse(id));
+
+        return "content";
+
+    }
+
+    @GetMapping("/courses/{courseId}/content/add-up")
+    public String createAddUpView(Model model, @PathVariable(value = "courseId") int id) {
+        model.addAttribute("addContentDTO", new AddContentDTO());
+        return "add-up-content";
+    }
+
+    @PostMapping("/courses/{courseId}/content/add-up")
+    public String addUpContentView(Model model, @PathVariable(value = "courseId") int id, @ModelAttribute(value = "addContentDTO") @Valid AddContentDTO addContentDTO,
+            BindingResult rs, RedirectAttributes redirectAttributes) {
+        System.out.println("Hello Content Receive: " + addContentDTO);
+         if (rs.hasErrors()) {
+            return "add-up-content";
+        }
+        try {
+            this.contentService.addUpContent(addContentDTO);
+            redirectAttributes.addFlashAttribute("successMsg", "Khóa học đã được lưu thành công.");
+            return "redirect:/courses/{courseId}/content";  // Chuyển hướng đến danh sách khóa học
+        } catch (Exception ex) {
+            redirectAttributes.addFlashAttribute("errMsg", ex.getMessage());
+            return "redirect:/courses/{courseId}/content/add-up";  // Chuyển hướng lại trang thêm/sửa khóa học
+        }
+        
+    }
+    
+    
+    @GetMapping("/courses/{courseId}/content/{contentId}/add-up")
+    public String sendContent(Model model, @PathVariable(value = "courseId") int id, @PathVariable(value = "contentId") int contentId) {
+        model.addAttribute("addContentDTO", this.contentService.getContentById(contentId));
+        System.out.println(this.contentService.getContentById(contentId));
+        return "add-up-content";
+    }
+    
+    
+    
+    // Todo: test vẽ biểu đồ
+    @GetMapping("courses/{courseId}/stats")
+    public String getCourseStats(@PathVariable("courseId") int courseId, Model model) {
+        // Giả lập dữ liệu thống kê
+        Map<String, Integer> contentStats = new HashMap<>();
+        contentStats.put("Bài giảng", 10);
+        contentStats.put("Quiz", 5);
+        contentStats.put("Assignment", 3);
+        contentStats.put("Test", 2);
+
+        // Thêm dữ liệu vào model
+        model.addAttribute("contentStats", contentStats);
+        model.addAttribute("courseId", courseId);
+
+        return "course"; // Tên của JSP mà bạn muốn trả về
+    }
+
 }

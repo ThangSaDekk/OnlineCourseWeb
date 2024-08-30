@@ -4,10 +4,13 @@
  */
 package com.group8.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.group8.pojo.Enum.CourseType;
+import com.group8.pojo.Enum.CourseStatus;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -20,6 +23,7 @@ import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -27,6 +31,7 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -96,12 +101,15 @@ public class Course implements Serializable {
     private String img;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    @JsonIgnore
     private Category categoryId;
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    @JsonIgnore
     private Instructor instructorId;
+    @OneToMany(mappedBy = "courseId")
+    private Set<Content> contentSet;
+
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
+    private Set<Enrollment> enrollmentSet;
 
     @Transient
     private MultipartFile file;
@@ -217,6 +225,24 @@ public class Course implements Serializable {
 
     public void setInstructorId(Instructor instructorId) {
         this.instructorId = instructorId;
+    }
+
+    @XmlTransient
+    public Set<Content> getContentSet() {
+        return contentSet;
+    }
+
+    public void setContentSet(Set<Content> contentSet) {
+        this.contentSet = contentSet;
+    }
+
+    @XmlTransient
+    public Set<Enrollment> getEnrollmentSet() {
+        return enrollmentSet;
+    }
+
+    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
+        this.enrollmentSet = enrollmentSet;
     }
 
     @Override

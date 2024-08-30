@@ -4,9 +4,9 @@
  */
 package com.group8.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.Set;
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -16,6 +16,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
@@ -117,6 +118,10 @@ public class User implements Serializable {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Process> processSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Enrollment> enrollmentSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
     private Instructor instructor;
     @Transient
@@ -239,7 +244,14 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    @JsonIgnore
+    public Set<Process> getProcessSet() {
+        return processSet;
+    }
+
+    public void setProcessSet(Set<Process> processSet) {
+        this.processSet = processSet;
+    }
+
     public Instructor getInstructor() {
         return instructor;
     }
@@ -276,6 +288,15 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "com.group8.pojo.User[ id=" + id + " ]";
+    }
+
+    @XmlTransient
+    public Set<Enrollment> getEnrollmentSet() {
+        return enrollmentSet;
+}
+
+    public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
+        this.enrollmentSet = enrollmentSet;
     }
 
 }
