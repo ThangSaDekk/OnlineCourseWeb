@@ -6,7 +6,7 @@ package com.group8.repository.impl;
 
 import com.group8.pojo.Course;
 import com.group8.pojo.Enrollment;
-import com.group8.pojo.EnrollmentStatus;
+import com.group8.pojo.Enum.EnrollmentStatus;
 import com.group8.repository.EnrollmentRepository;
 import java.util.ArrayList;
 import java.util.Date;

@@ -4,7 +4,6 @@
  */
 package com.group8.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -49,9 +48,6 @@ import javax.xml.bind.annotation.XmlTransient;
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
-
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
-    private Set<Enrollment> enrollmentSet;
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -111,6 +107,10 @@ public class User implements Serializable {
     @Column(name = "updated_date")
     @Temporal(TemporalType.TIMESTAMP)
     private Date updatedDate;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Process> processSet;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "userId")
+    private Set<Enrollment> enrollmentSet;
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "userId")
     private Instructor instructor;
 
@@ -231,7 +231,14 @@ public class User implements Serializable {
     }
 
     @XmlTransient
-    @JsonIgnore
+    public Set<Process> getProcessSet() {
+        return processSet;
+    }
+
+    public void setProcessSet(Set<Process> processSet) {
+        this.processSet = processSet;
+    }
+
     public Instructor getInstructor() {
         return instructor;
     }
@@ -273,7 +280,7 @@ public class User implements Serializable {
     @XmlTransient
     public Set<Enrollment> getEnrollmentSet() {
         return enrollmentSet;
-    }
+}
 
     public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
         this.enrollmentSet = enrollmentSet;

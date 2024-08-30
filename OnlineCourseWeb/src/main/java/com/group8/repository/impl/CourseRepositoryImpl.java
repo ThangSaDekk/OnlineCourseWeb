@@ -5,8 +5,8 @@
 package com.group8.repository.impl;
 
 import com.group8.pojo.Course;
-import com.group8.pojo.CourseStatus;
-import com.group8.pojo.CourseType;
+import com.group8.pojo.Enum.CourseStatus;
+import com.group8.pojo.Enum.CourseType;
 import com.group8.repository.CourseRepository;
 import java.util.ArrayList;
 import java.util.List;

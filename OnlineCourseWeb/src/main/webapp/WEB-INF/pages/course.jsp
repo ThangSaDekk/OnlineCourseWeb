@@ -1,6 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-<c:set var="baseUrl" value="?kw=${param.kw}&status=${param.status}&courseType=${param.courseType}" />
+<c:set var="baseUrl" value="?kw=${param.kw}&status=${param.status}&courseType=${param.courseType}&fromPrice=${param.fromPrice}&toPrice=${param.toPrice}&instructorId=${param.instructorId}" />
 
 <div class="content-wrapper" style="overflow-y: auto;">
     <!-- Content Header (Page header) -->
@@ -26,9 +26,15 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
+    <!-- Hi?n th? thông báo thành công n?u có -->
+    <c:if test="${not empty successMsg}">
+        <div class="alert alert-success container">
+            ${successMsg}
+        </div>
+    </c:if>
 
     <div class="card container">
-        <div class="card-header border-transparent">
+        <div class="card-header border-transparent" id="main">
             <h3 class="card-title">Courses</h3>
 
             <div class="card-tools">
@@ -135,11 +141,12 @@
                                 </td>
                                 <td>${course.instructorId.userId.lastName} ${course.instructorId.userId.firstName}</td>
                                 <td>
-                                    <a href="<c:url value="/courses/add-up/${course.id}"/>" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
-                                    <a href="#" class="text-success mr-2" title="View"><i class="fas fa-eye"></i></a>
+                                    <a href="<c:url value="/courses/${course.id}/add-up"/>" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
+                                    <a href="<c:url value="/courses/${course.id}/content"/>" class="text-success mr-2" title="View"><i class="fas fa-eye"></i></a>
                                         <c:url value="/api/courses/${course.id}/" var="cD" />
                                         <c:url value="course${course.id}" var="cE" />
                                     <a href="#" onclick="deleteCourse('${cD}', '${cE}')" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
+
                                 </td>
                             </tr>
                         </c:forEach>
@@ -150,21 +157,11 @@
         </div>
         <div class="card-footer clearfix">
             <ul class="pagination pagination-sm m-0 float-right">
-                <c:if test="${params.page > 1}">
-                    <li class="page-item">
-                        <a class="page-link" href="${baseUrl}&page=${params.page - 1}">&laquo;</a>
-                    </li>
-                </c:if>
                 <c:forEach var="i" begin="1" end="${pageTotal}">
-                    <li class="page-item ${i == params.page ? 'active' : ''}">
+                    <li class="page-item ${i == param.page ? 'active' : ''}">
                         <a class="page-link" href="${baseUrl}&page=${i}">${i}</a>
                     </li>
                 </c:forEach>
-                <c:if test="${params.page < pageTotal}">
-                    <li class="page-item">
-                        <a class="page-link" href="${baseUrl}&page=${params.page + 1}">&raquo;</a>
-                    </li>
-                </c:if>
             </ul>
         </div>
     </div>

@@ -4,7 +4,8 @@
  */
 package com.group8.pojo;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.group8.pojo.Enum.CourseType;
+import com.group8.pojo.Enum.CourseStatus;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -100,12 +101,13 @@ public class Course implements Serializable {
     private String img;
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    @JsonIgnore
     private Category categoryId;
     @JoinColumn(name = "instructor_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
-    @JsonIgnore
     private Instructor instructorId;
+    @OneToMany(mappedBy = "courseId")
+    private Set<Content> contentSet;
+
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
     private Set<Enrollment> enrollmentSet;
 
@@ -226,6 +228,15 @@ public class Course implements Serializable {
     }
 
     @XmlTransient
+    public Set<Content> getContentSet() {
+        return contentSet;
+    }
+
+    public void setContentSet(Set<Content> contentSet) {
+        this.contentSet = contentSet;
+    }
+
+    @XmlTransient
     public Set<Enrollment> getEnrollmentSet() {
         return enrollmentSet;
     }
@@ -258,13 +269,13 @@ public class Course implements Serializable {
     public String toString() {
         return "com.group8.pojo.Course[ id=" + id + " ]";
     }
-    
+
     /**
      * @return the file
      */
     public MultipartFile getFile() {
         return file;
-}
+    }
 
     /**
      * @param file the file to set

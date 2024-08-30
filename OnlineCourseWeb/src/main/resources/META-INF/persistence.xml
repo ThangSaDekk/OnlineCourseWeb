@@ -8,6 +8,11 @@
     <class>com.group8.pojo.Instructor</class>
     <class>com.group8.pojo.Invoice</class>
     <class>com.group8.pojo.Enrollment</class>
+    <class>com.group8.pojo.Process</class>
+    <class>com.group8.pojo.Content</class>
+    <class>com.group8.pojo.Lecture</class>
+    <class>com.group8.pojo.Video</class>
+    <class>com.group8.pojo.Information</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

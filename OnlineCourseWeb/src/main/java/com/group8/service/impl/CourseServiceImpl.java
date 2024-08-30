@@ -50,8 +50,12 @@ public class CourseServiceImpl implements CourseService {
                 throw new RuntimeException("Không thể upload hình ảnh. Vui lòng thử lại.");
             }
         }
-        course.setCreatedDate(new Date());
-        course.setUpdatedDate(new Date());
+          if (course.getId() == null) {
+                course.setCreatedDate(new Date());
+            } else {
+                course.setCreatedDate(this.courseRepo.getCourseById(course.getId()).getCreatedDate());
+            }
+            course.setUpdatedDate(new Date());
         this.courseRepo.addOrUpCourse(course);
     }
 
@@ -65,7 +69,7 @@ public class CourseServiceImpl implements CourseService {
 
         Course course = this.courseRepo.getCourseById(id);
         AddCourseDTO addCourseDTO = new AddCourseDTO();
-        
+
         addCourseDTO.setId(course.getId());
         addCourseDTO.setTitle(course.getTitle());
         addCourseDTO.setDescription(course.getDescription());
@@ -77,7 +81,7 @@ public class CourseServiceImpl implements CourseService {
         addCourseDTO.setInstructorId(course.getInstructorId().getId());
         addCourseDTO.setImg(course.getImg());
         return addCourseDTO;
-        
+
     }
 
     @Override

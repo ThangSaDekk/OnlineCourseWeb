@@ -1,4 +1,4 @@
-package com.group8.pojo;
+package com.group8.pojo.Enum;
 
 public enum CourseType {
     ONLINE("Online"),
