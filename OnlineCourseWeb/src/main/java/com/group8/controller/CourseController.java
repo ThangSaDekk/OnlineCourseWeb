@@ -22,6 +22,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
+import org.hibernate.StaleObjectStateException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Controller;
@@ -132,7 +133,7 @@ public class CourseController {
             this.courseService.addOrUpCourse(course);
             redirectAttributes.addFlashAttribute("successMsg", "Khóa học đã được lưu thành công.");
             return "redirect:/courses";  // Chuyển hướng đến danh sách khóa học
-        } catch (Exception ex) {
+        } catch (StaleObjectStateException ex) {
             redirectAttributes.addFlashAttribute("errMsg", ex.getMessage());
             return "redirect:/courses/add-up";  // Chuyển hướng lại trang thêm/sửa khóa học
         }

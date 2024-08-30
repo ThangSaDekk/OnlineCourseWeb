@@ -6,6 +6,7 @@ package com.group8.repository;
 
 import com.group8.pojo.Instructor;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -13,4 +14,6 @@ import java.util.List;
  */
 public interface InstructorRepository {
     List<Instructor> getAllInstructors();
+    Instructor addInstructor(Instructor instructor);
+    Instructor getInstructorById(int id);
 }

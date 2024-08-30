@@ -40,7 +40,7 @@ public class ApiCourseController {
     @Autowired
     private CourseService courseService;
 
-    @GetMapping("/courses")
+        @GetMapping("/courses")
     public ResponseEntity<List<CourseDTO>> list(Map<String, String> params) {
         return new ResponseEntity<>(this.courseService.getCourseDTO(params), HttpStatus.OK);
     }

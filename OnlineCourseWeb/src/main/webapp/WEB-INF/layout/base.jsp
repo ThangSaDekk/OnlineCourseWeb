@@ -28,9 +28,9 @@
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
         <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-       <script src="https://cdn.ckeditor.com/ckfinder/ckfinder.js"></script>
-    
-        
+        <script src="https://cdn.ckeditor.com/ckfinder/ckfinder.js"></script>
+
+
 
 
 
@@ -151,6 +151,7 @@
                                             if (d) {
                                                 d.style.display = "none"; // Ẩn phần tử
                                                 alert("Xóa thành công !!");
+
                                             } else {
                                                 alert("Không tìm thấy khóa học để xóa!");
                                             }
@@ -172,9 +173,57 @@
             }
         </script>
 
+        <---<!-- Delete Instructor -->
+        <script>
+            function deleteUserInstructor(endpoint, instructorId) {
+                var username = '<sec:authentication property="principal.username"/>';
+                var password = prompt("Vui lòng nhập mật khẩu để xóa giảng viên:");
+                if (password === null) {
+                    alert("Xóa giảng viên không hợp lệ.");
+                    return;
+                }
+
+                // Gọi API để xác thực và nhận token
+                fetch('/OnlineCourseWeb/api/login/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({username: username, password: password})
+                }).then(res => res.text())
+                        .then(token => {
+                            if (token !== null) {
+                                if (confirm("Bạn chắc chắn xóa không?") === true) {
+                                    fetch(endpoint, {
+                                        method: "DELETE",
+                                        headers: {
+                                            'Authorization': token
+                                        }
+                                    }).then(res => {
+                                        if (res.status === 204) {
+                                            alert("Xóa thành công !!");
+                                            window.location.reload();
+                                        } else {
+                                            alert("Xóa không thành công!");
+                                        }
+                                    }).catch(error => {
+                                        console.error('Error:', error);
+                                        alert("Đã xảy ra lỗi trong quá trình xóa!");
+                                    });
+                                }
+                            } else {
+                                alert("Tên đăng nhập hoặc mật khẩu không chính xác.");
+                            }
+                        }).catch(error => {
+                    console.error('Error:', error);
+                    alert("Đã xảy ra lỗi trong quá trình xác thực!");
+                });
+            }
+        </script>
+        
         <script>
             function deleteContent(endpoint, elementId) {
-                var username = '<sec:authentication property="principal.username"/>';
+                 var username = '<sec:authentication property="principal.username"/>';
                 var password = prompt("Vui lòng nhập mật khẩu để xóa nội dung:");
                 if (password === null) {
                     alert("Xóa nội dung không hợp lệ.");

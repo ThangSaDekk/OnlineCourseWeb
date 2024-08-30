@@ -44,6 +44,7 @@ public class UserRepositoryImpl implements UserRepository {
 
     }
 
+
     @Override
     public boolean authUser(String username, String password) {
         User u = this.getUserByUsername(username);
@@ -51,13 +52,35 @@ public class UserRepositoryImpl implements UserRepository {
         return this.passEncoder.matches(password, u.getPassword());
     }
 
+
     @Override
     public User addUser(User u) {
         Session s = this.factory.getObject().getCurrentSession();
-        s.save(u);
+        
+        if (u.getId() != null) {
+            s.update(u);
 
+        } else {
+            s.save(u);
+        }
         return u;
     }
+    
+
+    @Override
+    public User getUserByID(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(User.class, id);
+    }
+
+    @Override
+    public void deleteUserInstructor(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        User u = this.getUserByID(id);
+        s.delete(u);
+
+    }
+
 
     @Override
     public long countUsers(Map<String, String> params) {
