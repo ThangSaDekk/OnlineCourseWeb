@@ -43,4 +43,14 @@ public class StatsController {
         return "chart";
 
     }
+    
+    // @Autowired
+    // private StatsRepository statsRepository;
+    
+    // @RequestMapping("/stats")
+    // public String viewStats(Model model){
+    //     List<Object[]> revenueStats = statsRepository.statsRevenueByMonth();
+    //     model.addAttribute("revenueStats", revenueStats);
+    //     return "stats";
+    // }
 }

@@ -1,8 +1,9 @@
 <%-- 
-    Document   : addUpInstructor.jsp
-    Created on : Aug 17, 2024, 3:36:32 PM
+    Document   : addUpInstructor
+    Created on : Aug 22, 2024, 10:32:36 PM
     Author     : TAN DAT
 --%>
+
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
 <c:url value='/instructor/add-up' var="action"/>
@@ -64,7 +65,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <!-- Form thêm khóa h?c -->
+                    <!-- Form th?m kh?a h?c -->
                     <form:form method="POST" modelAttribute="AddUserDTO" enctype="multipart/form-data" action="${action}">
                         <form:hidden path="id" />                        
                         <form:hidden path="idInstructor" />
@@ -135,11 +136,11 @@
 
                                 <c:choose>
                                     <c:when test="${not empty AddUserDTO.id}">
-                                        <input type="submit" value="Update Course" class="btn btn-success float-right">
+                                        <input type="submit" value="Update Instructor" class="btn btn-success float-right">
 
                                     </c:when>
                                     <c:otherwise>
-                                        <input type="submit" value="Create New Course" class="btn btn-success float-right">
+                                        <input type="submit" value="Create New Instructor" class="btn btn-success float-right">
 
                                     </c:otherwise>
                                 </c:choose>
@@ -155,4 +156,3 @@
     </section>
     <!-- /.content -->
 </div>
-

@@ -26,7 +26,6 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
-import static org.apache.velocity.texen.util.FileUtil.file;
 import org.springframework.web.multipart.MultipartFile;
 
 /**
@@ -126,6 +125,14 @@ public class User implements Serializable {
     private Instructor instructor;
     @Transient
     private MultipartFile file;
+    
+    public MultipartFile getFile() {
+        return file;
+    }
+    
+    public void setFile(MultipartFile file) {
+        this.file = file;
+    }
 
     public User() {
     }

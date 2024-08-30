@@ -4,7 +4,6 @@
  */
 package com.group8.service.impl;
 
-import com.group8.dto.AddInstructorDTO;
 import com.group8.dto.AddUserDTO;
 import com.group8.dto.InstructorDTO;
 import com.group8.pojo.Instructor;
@@ -33,10 +32,10 @@ public class InstructorServiceImpl implements InstructorService{
     private UserRepository userRepo;
     @Autowired
     private ModelMapper modelMapper;
-    
+
     @Override
     public List<InstructorDTO> getAllInstructorsDTO(Map<String,String>params) {
-         List<Instructor> instructors = this.instructorRepo.getAllInstructors();
+        List<Instructor> instructors = this.instructorRepo.getAllInstructors(params);
         return instructors.stream()
                 .map(i -> {
                     InstructorDTO instructorDTO = new InstructorDTO();
@@ -47,8 +46,8 @@ public class InstructorServiceImpl implements InstructorService{
     }
 
     @Override
-    public List<Instructor> getAllInstructors() {
-        return this.instructorRepo.getAllInstructors();
+    public List<Instructor> getAllInstructors(Map<String, String> params) {
+        return this.instructorRepo.getAllInstructors(params);
     }
 
     @Override
@@ -63,6 +62,7 @@ public class InstructorServiceImpl implements InstructorService{
         Instructor instructor = this.instructorRepo.getInstructorById(id);
         AddUserDTO addUserDTO = new AddUserDTO();
         
+
         addUserDTO.setId(instructor.getId());
         addUserDTO.setIdInstructor(instructor.getUserId().getId());
         addUserDTO.setFirstName(instructor.getUserId().getFirstName());
@@ -78,4 +78,6 @@ public class InstructorServiceImpl implements InstructorService{
         return addUserDTO;
     }
     
+
+
 }

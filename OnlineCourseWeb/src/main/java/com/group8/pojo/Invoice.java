@@ -7,16 +7,22 @@ package com.group8.pojo;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import javax.persistence.Basic;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -86,6 +92,9 @@ public class Invoice implements Serializable {
     private String payerEmail;
     @OneToMany(mappedBy = "invoiceId")
     private Set<Enrollment> enrollmentSet;
+    
+    
+    
 
     public Invoice() {
     }
@@ -209,5 +218,6 @@ public class Invoice implements Serializable {
     public String toString() {
         return "com.group8.pojo.Invoice[ id=" + id + " ]";
     }
+
     
 }

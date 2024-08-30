@@ -10,19 +10,9 @@ import lombok.Data;
  *
  * @author TAN DAT
  */
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
-
-/**
- *
- * @author TAN DAT
- */
-
 @Data
 public class AddInstructorDTO {
-
+    
     /**
      * @return the expertise
      */
@@ -189,4 +179,5 @@ public class AddInstructorDTO {
     
     private String expertise;
     private String description;
+    
 }
