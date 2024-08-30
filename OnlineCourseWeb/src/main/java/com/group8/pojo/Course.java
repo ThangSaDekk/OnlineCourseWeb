@@ -108,6 +108,7 @@ public class Course implements Serializable {
     private Instructor instructorId;
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
     private Set<Enrollment> enrollmentSet;
+    
 
     @Transient
     private MultipartFile file;

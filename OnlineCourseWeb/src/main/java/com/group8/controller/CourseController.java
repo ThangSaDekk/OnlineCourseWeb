@@ -51,7 +51,7 @@ public class CourseController {
     @ModelAttribute
     public void commAttrs(Model model) {
         model.addAttribute("categories", categoryService.getCates());
-        model.addAttribute("instructors", instructorService.getAllInstructors());
+        model.addAttribute("instructors", instructorService.getAllInstructors(null));
         model.addAttribute("courseStatusList", CourseStatus.values());
         model.addAttribute("courseTypesList", CourseType.values());
         model.addAttribute("total", this.courseService.getCourse(null));

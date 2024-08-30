@@ -5,6 +5,7 @@
 package com.group8.dto;
 
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 /**
  *
@@ -22,6 +23,10 @@ public class AddUserDTO {
 //    private Boolean active;
     private String userRole;
     private String avatar;
+    private String expertise;
+    private String description;
+    private MultipartFile file;
+    private Integer idInstructor;
 
 //    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
 //    private Date createdDate;

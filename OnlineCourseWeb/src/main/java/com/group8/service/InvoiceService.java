@@ -5,15 +5,19 @@
 package com.group8.service;
 
 import com.group8.dto.EnrollmentDTO;
-import com.group8.pojo.Enrollment;
+import com.group8.dto.InvoiceDTO;
+
+import com.group8.pojo.Invoice;
 import java.util.List;
 import java.util.Map;
 
 /**
  *
- * @author thang
+ * @author TAN DAT
  */
-public interface EnrollmentService {
-    List<Enrollment> getEnrollments(Map<String,String> params);
+public interface InvoiceService {
+    
+    List<Invoice> getAllInvoice(Map<String,String>params);
+    List<EnrollmentDTO> getInvoiceById(int id);
     
 }

@@ -57,9 +57,9 @@ public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
     @Bean
     public Cloudinary cloudinary() {
         Cloudinary cloudinary = new Cloudinary(ObjectUtils.asMap(
-                "cloud_name", "dh1irfap0",
-                "api_key", "362769244261142",
-                "api_secret", "NtmhAnw9xAo3HurpxbFHy1Pth30",
+                "cloud_name", "djrv1hnrc",
+                "api_key", "192829863722195",
+                "api_secret", "3B5pimNzenJOPsN88KYKDS_chis",
                 "secure", true));
         return cloudinary;
     }

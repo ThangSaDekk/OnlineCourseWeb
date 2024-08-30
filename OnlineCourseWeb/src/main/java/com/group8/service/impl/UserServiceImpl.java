@@ -30,7 +30,8 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author admin
  */
-@Service("userDetailsService")
+//@Service("userDetailsService")
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -64,7 +65,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserDTO addUser(Map<String, String> params, MultipartFile avatar) { 
+    public UserDTO addUser(Map<String, String> params, MultipartFile avatar) {
         User u = new User();
         AddUserDTO addUserDTO = new AddUserDTO();
         UserDTO userDTO = new UserDTO();
@@ -75,7 +76,7 @@ public class UserServiceImpl implements UserService {
         addUserDTO.setUsername(params.get("username"));
         addUserDTO.setPassword(this.passEncoder.encode(params.get("password")));
         addUserDTO.setUserRole(params.getOrDefault("role", "ROLE_STUDENT"));
-         if (!avatar.isEmpty()) {
+        if (!avatar.isEmpty()) {
             try {
                 Map<String, Object> res = this.cloudinary.uploader().upload(avatar.getBytes(),
                         ObjectUtils.asMap("resource_type", "auto"));
@@ -84,13 +85,13 @@ public class UserServiceImpl implements UserService {
                 Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        modelMapper.map(addUserDTO,u);
+        modelMapper.map(addUserDTO, u);
         u.setActive(Boolean.TRUE);
         u.setCreatedDate(new Date());
         u.setUpdatedDate(new Date());
 
         this.userRepo.addUser(u);
-        modelMapper.map(u,userDTO);
+        modelMapper.map(u, userDTO);
         return userDTO;
     }
 
@@ -98,8 +99,53 @@ public class UserServiceImpl implements UserService {
     public UserDTO getUserDTO(String username) {
         User u = this.userRepo.getUserByUsername(username);
         UserDTO userDTO = new UserDTO();
-        modelMapper.map(u,userDTO);
+        modelMapper.map(u, userDTO);
         return userDTO;
+    }
+
+    @Override
+    public AddUserDTO getUserById(Integer id) {
+        User user = this.userRepo.getUserByID(id);
+        AddUserDTO addUserDTO = new AddUserDTO();
+        addUserDTO.setId(user.getId());
+        addUserDTO.setFirstName(user.getFirstName());
+        addUserDTO.setLastName(user.getLastName());
+        addUserDTO.setEmail(user.getEmail());
+        addUserDTO.setPhone(user.getPhone());
+        addUserDTO.setUsername(user.getUsername());
+        addUserDTO.setPassword(user.getPassword());
+        addUserDTO.setFile(user.getFile());
+
+        return addUserDTO;
+    }
+
+    @Override//Thêm User role INSTRUCTOR
+    public void addUserInstructor(User user) {
+        if (!user.getFile().isEmpty()) {
+            try {
+                Map<String, Object> res = this.cloudinary.uploader().upload(user.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                user.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        user.setActive(Boolean.TRUE);
+        user.setCreatedDate(new Date());
+        user.setUpdatedDate(new Date());
+
+        this.userRepo.addUser(user);
+    }
+
+    @Override
+    public void deleteUserInstuctor(int id) {
+        this.userRepo.deleteUserInstructor(id);
+    }
+    
+    @Override
+    public void changePassword(User user) {
+        user.setPassword(this.passEncoder.encode(user.getPassword()));
+        this.userRepo.changePassword(user);
     }
 
 }

@@ -4,6 +4,7 @@
  */
 package com.group8.service;
 
+import com.group8.dto.AddUserDTO;
 import com.group8.dto.UserDTO;
 import com.group8.pojo.User;
 import java.util.Map;
@@ -19,4 +20,8 @@ public interface UserService extends UserDetailsService {
     UserDTO getUserDTO(String username);
     boolean authUser(String username, String password);
     UserDTO addUser(Map<String, String> params, MultipartFile avatar);
+    AddUserDTO getUserById(Integer id);
+    void addUserInstructor(User user);
+    void deleteUserInstuctor(int id);
+    void changePassword(User user);
 }
