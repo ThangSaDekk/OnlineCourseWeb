@@ -5,12 +5,14 @@
 package com.group8.controller;
 
 import com.group8.dto.CourseDTO;
+import com.group8.dto.EnrollmentDTO;
 import com.group8.pojo.Category;
 import com.group8.pojo.Course;
 import com.group8.pojo.Enum.CourseStatus;
 import com.group8.pojo.Enum.CourseType;
 import com.group8.pojo.Instructor;
 import com.group8.service.CourseService;
+import com.group8.service.InvoiceService;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +20,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -76,11 +79,24 @@ public class ApiCourseController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error saving course: " + e.getMessage());
         }
     }
-    
-     
+
     @DeleteMapping("/courses/{courseId}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable(value = "courseId") int id) {
         this.courseService.deleteCourse(id);
     }
+    
+//    @Autowired
+//    private InvoiceService invoiceService;
+//
+//    @GetMapping("/invoice/view-details/{invoiceId}")
+//    public ResponseEntity<List<EnrollmentDTO>> detailsViewInvoice(@PathVariable("invoiceId") int id) {
+//        List<EnrollmentDTO> enrollmentDTOs = invoiceService.getInvoiceById(id);
+//
+//        if (enrollmentDTOs == null || enrollmentDTOs.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
+//    }
+
 }

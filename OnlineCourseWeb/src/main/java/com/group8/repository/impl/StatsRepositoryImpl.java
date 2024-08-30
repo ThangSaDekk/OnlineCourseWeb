@@ -27,6 +27,7 @@ import org.springframework.transaction.annotation.Transactional;
 /**
  *
  * @author thang
+ * @author TAN DAT
  */
 @Repository
 @Transactional
@@ -70,8 +71,7 @@ public class StatsRepositoryImpl implements StatsRepository {
         // Select the period (DAY, MONTH, etc.) and count the number of enrollments
         q.multiselect(
                 b.function(params.get("period"), Integer.class, rE.get("createdDate")),
-                b.count(rE.get("id"))
-        );
+                b.count(rE.get("id")));
 
         // Group by the period (e.g., DAY, MONTH, etc.)
         q.groupBy(b.function(params.get("period"), Integer.class, rE.get("createdDate")));
@@ -108,8 +108,7 @@ public class StatsRepositoryImpl implements StatsRepository {
         }
         q.multiselect(
                 rC.get("title"),
-                b.count(rE.get("id"))
-        );
+                b.count(rE.get("id")));
 
         // Group by the period (e.g., DAY, MONTH, etc.)
         q.groupBy(rC.get("id"));
@@ -119,8 +118,28 @@ public class StatsRepositoryImpl implements StatsRepository {
         return query.getResultList();
 
     }
-    
-    
-    
+
+    public List<Object[]> statsRevenueByMonth() {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
+        Root<Invoice> rI = q.from(Invoice.class);
+
+        q.where(b.equal(rI.get("status"), 1)); // Chỉ lấy hóa đơn đã thanh toán
+
+        q.multiselect(
+                b.function("YEAR", Integer.class, rI.get("createdDate")),
+                b.function("MONTH", Integer.class, rI.get("createdDate")),
+                b.sum(rI.get("totalAmount")));
+        q.groupBy(
+                b.function("YEAR", Integer.class, rI.get("createdDate")),
+                b.function("MONTH", Integer.class, rI.get("createdDate")));
+        q.orderBy(
+                b.desc(b.function("YEAR", Integer.class, rI.get("createdDate"))),
+                b.asc(b.function("MONTH", Integer.class, rI.get("createdDate"))));
+
+        Query query = s.createQuery(q);
+        return query.getResultList();
+    }
 
 }

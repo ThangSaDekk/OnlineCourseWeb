@@ -5,6 +5,8 @@
 package com.group8.repository;
 
 import com.group8.pojo.Invoice;
+import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -12,6 +14,10 @@ import com.group8.pojo.Invoice;
  */
 public interface InvoiceRepository {
     void addUpInvoice(Invoice invoice);
-    
+
     Invoice checkrequestId(String RequestId);
+
+    List<Invoice> getAllInvoice(Map<String, String> params);
+
+    Invoice getInvoiceById(int id);
 }

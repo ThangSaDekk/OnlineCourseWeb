@@ -32,7 +32,8 @@ import org.springframework.web.multipart.MultipartFile;
  *
  * @author admin
  */
-@Service("userDetailsService")
+//@Service("userDetailsService")
+@Service
 public class UserServiceImpl implements UserService {
 
     @Autowired
@@ -143,9 +144,33 @@ public class UserServiceImpl implements UserService {
         return addUserDTO;
     }
 
+    @Override//Thêm User role INSTRUCTOR
+    public void addUserInstructor(User user) {
+        if (!user.getFile().isEmpty()) {
+            try {
+                Map<String, Object> res = this.cloudinary.uploader().upload(user.getFile().getBytes(),
+                        ObjectUtils.asMap("resource_type", "auto"));
+                user.setAvatar(res.get("secure_url").toString());
+            } catch (IOException ex) {
+                Logger.getLogger(UserServiceImpl.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        user.setActive(Boolean.TRUE);
+        user.setCreatedDate(new Date());
+        user.setUpdatedDate(new Date());
+
+        this.userRepo.addUser(user);
+    }
+
     @Override
     public void deleteUserInstuctor(int id) {
         this.userRepo.deleteUserInstructor(id);
+    }
+    
+    @Override
+    public void changePassword(User user) {
+        user.setPassword(this.passEncoder.encode(user.getPassword()));
+        this.userRepo.changePassword(user);
     }
 
 }

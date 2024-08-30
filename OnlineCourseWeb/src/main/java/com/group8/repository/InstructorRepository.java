@@ -13,7 +13,7 @@ import java.util.Map;
  * @author thang
  */
 public interface InstructorRepository {
-    List<Instructor> getAllInstructors();
+    List<Instructor> getAllInstructors(Map<String, String> params);
     Instructor addInstructor(Instructor instructor);
     Instructor getInstructorById(int id);
 }

@@ -36,4 +36,8 @@ public class StatsServiceImpl implements StatsSerivce {
         return this.statsRepo.statsEnrollmentGroupByCourse(params);
     }
 
+    public List<Object[]> stastRevenueByMonth() {
+        return this.statsRepo.statsRevenueByMonth();
+    }
+    
 }
