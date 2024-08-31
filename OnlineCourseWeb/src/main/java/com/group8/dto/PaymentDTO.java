@@ -11,18 +11,26 @@ public class PaymentDTO {
     private String payerEmail;
     private String phone;
     private List<CoursePaymentDTO> courses;
+    private Integer userId;
 
-
-
-    // Calculate total amount
+    // Tính tổng số tiền
     public long getTotalAmount() {
         return courses.stream()
                 .mapToLong(c -> c.getPrice())
                 .sum();
     }
     
-    public String getNameCourses() {
+    // Lấy tên các khóa học
+//    public String getNameCourses() {
+//        return courses.stream()
+//                .map(c -> c.getTitle())
+//                .collect(Collectors.joining(", "));
+//    }
+    
+    // Lấy mã các khóa học
+    public String getCourseCode() {
         return courses.stream()
-                .map(c -> c.getTitle()).collect(Collectors.joining(", "));
+                .map(c -> String.valueOf(c.getId()))
+                .collect(Collectors.joining(","));
     }
 }

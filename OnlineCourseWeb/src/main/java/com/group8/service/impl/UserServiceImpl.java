@@ -155,4 +155,10 @@ public class UserServiceImpl implements UserService {
         this.userRepo.changePassword(user);
     }
 
+    @Override
+    public User getUserByID(int id) {
+
+        return this.userRepo.getUserByID(id);
+    }
+
 }

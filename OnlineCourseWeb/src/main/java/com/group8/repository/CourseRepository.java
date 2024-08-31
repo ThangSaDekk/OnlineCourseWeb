@@ -21,5 +21,7 @@ public interface CourseRepository {
     Course getCourseById(int id);
 
     void deleteCourse(int id);
+    
+    String getOrderInfor(String stringArray);
 
 }

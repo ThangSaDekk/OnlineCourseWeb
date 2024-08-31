@@ -75,7 +75,7 @@ public class CourseRepositoryImpl implements CourseRepository {
             }
             if (courseType != null && !courseType.isEmpty()) {
                 CourseType courseTypeEnum = CourseType.valueOf(courseType.toUpperCase());
-                Predicate p6 = b.equal(root.get("courseType"),courseTypeEnum);
+                Predicate p6 = b.equal(root.get("courseType"), courseTypeEnum);
                 predicates.add(p6);
             }
             if (instructorId != null && !instructorId.isEmpty()) {
@@ -121,6 +121,40 @@ public class CourseRepositoryImpl implements CourseRepository {
         Session s = this.factory.getObject().getCurrentSession();
         Course c = this.getCourseById(id);
         s.delete(c);
+    }
+
+    @Override
+    public String getOrderInfor(String stringArray) {
+        // Chuyển đổi chuỗi các ID thành danh sách số nguyên
+        List<Integer> courseIds = new ArrayList<>();
+        if (stringArray != null && !stringArray.isEmpty()) {
+            String[] ids = stringArray.split(",");
+            for (String id : ids) {
+                try {
+                    courseIds.add(Integer.parseInt(id.trim()));
+                } catch (NumberFormatException e) {
+                    // Xử lý trường hợp không thể chuyển đổi ID thành số nguyên
+                    e.printStackTrace();
+                    return "";
+                }
+            }
+        }
+
+        // Tạo session và CriteriaBuilder
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder cb = s.getCriteriaBuilder();
+        CriteriaQuery<String> cq = cb.createQuery(String.class);
+        Root<Course> root = cq.from(Course.class);
+
+        // Tạo predicate cho điều kiện tìm kiếm
+        Predicate predicate = root.get("id").in(courseIds);
+        cq.select(root.get("title")).where(predicate);
+
+        // Thực hiện truy vấn
+        List<String> titles = s.createQuery(cq).getResultList();
+
+        // Nối các tiêu đề thành chuỗi ngăn cách bởi ", "
+        return String.join(", ", titles);
     }
 
 }

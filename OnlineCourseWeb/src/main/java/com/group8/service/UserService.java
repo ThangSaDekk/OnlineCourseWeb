@@ -22,6 +22,8 @@ public interface UserService extends UserDetailsService {
     AddUserDTO getUserById(Integer id);
 
     UserDTO getUserDTO(String username);
+    
+    User getUserByID(int id);
 
     boolean authUser(String username, String password);
 

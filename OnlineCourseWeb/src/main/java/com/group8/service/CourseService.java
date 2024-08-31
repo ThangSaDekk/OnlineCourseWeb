@@ -20,4 +20,5 @@ public interface CourseService {
     void addOrUpCourse(Course course);
     AddCourseDTO getCourseById(int id);
     void deleteCourse(int id);
+    Course getCourseByID(int id);
 }

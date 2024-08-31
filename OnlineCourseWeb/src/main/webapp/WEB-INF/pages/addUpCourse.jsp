@@ -78,8 +78,7 @@
                             <textarea name="description" id="description" class="form-control" rows="4">${addCourseDTO.description}</textarea>
                             <script>
                                 CKEDITOR.replace('description', {
-                                    filebrowserImageBrowseUrl: '/ckfinder/ckfinder.html?type=Images',
-                                    filebrowserImageUploadUrl: '<c:url value="/images/"/>'
+                                    filebrowserImageUploadUrl: '<c:url value="/img/"/>'
                                 });
                             </script>
                         </div>

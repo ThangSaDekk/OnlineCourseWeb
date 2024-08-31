@@ -88,4 +88,9 @@ public class CourseServiceImpl implements CourseService {
     public void deleteCourse(int id) {
         this.courseRepo.deleteCourse(id);
     }
+
+    @Override
+    public Course getCourseByID(int id) {
+        return this.courseRepo.getCourseById(id);
+    }
 }

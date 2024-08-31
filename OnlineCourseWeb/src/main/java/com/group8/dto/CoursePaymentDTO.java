@@ -13,6 +13,5 @@ import lombok.Data;
 @Data
 public class CoursePaymentDTO {
     private Integer id;
-    private String title;
     private long price;
 }

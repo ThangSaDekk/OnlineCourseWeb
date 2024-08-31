@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.group8.dto.PaymentDTO;
 import com.group8.pojo.Invoice;
+import com.group8.repository.CourseRepository;
 import com.group8.repository.InvoiceRepository;
 import com.group8.service.PaymentService;
 import java.io.IOException;
@@ -18,6 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.NoSuchAlgorithmException;
+import java.util.Base64;
 import java.util.UUID;
 import java.util.Collections;
 import java.util.Date;
@@ -39,9 +41,12 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Autowired
     private PaymentService paymentService;
-    
+
     @Autowired
     private InvoiceRepository invoiceRepo;
+    
+    @Autowired
+    private CourseRepository courseRepo;
 
     @Override
     public ResponseEntity<String> pay(PaymentDTO paymentDTO, HttpServletRequest request) throws Exception {
@@ -51,13 +56,17 @@ public class PaymentServiceImpl implements PaymentService {
 
         String requestId = UUID.randomUUID().toString();
         String orderId = paymentDTO.getPaymentChannel() + requestId;
-        String orderInfo = String.format("pay for %s", paymentDTO.getNameCourses());
+        String orderInfo = this.courseRepo.getOrderInfor(paymentDTO.getCourseCode());
         String amount = String.valueOf(paymentDTO.getTotalAmount());
         String url = "http://127.0.0.1:8080/OnlineCourseWeb";
+        int userId = paymentDTO.getUserId();
+        String courseCode = String.valueOf(userId)+","+paymentDTO.getCourseCode();
+        System.out.println("Hello check:" + courseCode);
+      
 
         String rawSignature = String.format(
-                "accessKey=%s&amount=%s&extraData=&ipnUrl=%s&orderId=%s&orderInfo=%s&partnerCode=%s&redirectUrl=%s&requestId=%s&requestType=%s",
-                momoAccessKey, amount, url + momoIpnUrl, orderId, orderInfo,
+                "accessKey=%s&amount=%s&extraData=%s&ipnUrl=%s&orderId=%s&orderInfo=%s&partnerCode=%s&redirectUrl=%s&requestId=%s&requestType=%s",
+                momoAccessKey, amount, courseCode, url + momoIpnUrl, orderId, orderInfo,
                 momoPartnerCode, url + momoRedirectUrl, requestId, momoRequestType
         );
 
@@ -67,10 +76,10 @@ public class PaymentServiceImpl implements PaymentService {
         headers.set("Content-Type", "application/json");
 
         String jsonData = String.format(
-                "{ \"partnerCode\": \"%s\", \"partnerName\": \"Momo Payment\", \"storeId\": \"OnlineCourseView\", \"requestId\": \"%s\", \"amount\": \"%s\", \"orderId\": \"%s\", \"orderInfo\": \"%s\", \"redirectUrl\": \"%s\", \"ipnUrl\": \"%s\", \"lang\": \"vi\", \"extraData\": \"\", \"requestType\": \"%s\", \"signature\": \"%s\" }",
+                "{ \"partnerCode\": \"%s\", \"partnerName\": \"Momo Payment\", \"storeId\": \"OnlineCourseView\", \"requestId\": \"%s\", \"amount\": \"%s\", \"orderId\": \"%s\", \"orderInfo\": \"%s\", \"redirectUrl\": \"%s\", \"ipnUrl\": \"%s\", \"lang\": \"vi\", \"extraData\": \"%s\", \"requestType\": \"%s\", \"signature\": \"%s\" }",
                 momoPartnerCode, requestId, amount, orderId, orderInfo,
                 url + momoRedirectUrl, url + momoIpnUrl,
-                momoRequestType, signature
+                courseCode, momoRequestType, signature
         );
 
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonData, headers);
@@ -90,7 +99,6 @@ public class PaymentServiceImpl implements PaymentService {
             sha256Hmac.init(secretKeySpec);
             byte[] hash = sha256Hmac.doFinal(rawSignature.getBytes());
 
-            // Trả về dạng hex (giống Python)
             StringBuilder hexString = new StringBuilder();
             for (byte b : hash) {
                 String hex = Integer.toHexString(0xff & b);
@@ -120,7 +128,6 @@ public class PaymentServiceImpl implements PaymentService {
 //        return String.format("%s://%s", uri.getScheme(), uri.getHost());
 //    }
 
-    
     @Override
     public ResponseEntity<Map<String, String>> payWithMoMo(HttpServletRequest request, PaymentDTO paymentDTO) throws Exception {
         // Gọi dịch vụ thanh toán qua MoMo và nhận lại ResponseEntity<String>
@@ -145,7 +152,7 @@ public class PaymentServiceImpl implements PaymentService {
         if ((int) data.get("resultCode") != 0) {
             return new ResponseEntity<>(Collections.singletonMap("error", "Transaction is not successful"), HttpStatus.BAD_REQUEST);
         }
-        
+
         Invoice invoice = new Invoice();
         invoice.setCreatedDate(new Date());
         invoice.setUpdatedDate(new Date());
@@ -154,15 +161,24 @@ public class PaymentServiceImpl implements PaymentService {
         invoice.setPayerEmail(paymentDTO.getPayerEmail());
         invoice.setPayerName(paymentDTO.getPayerName());
         invoice.setPayerPhone(paymentDTO.getPhone());
-        
+
         this.invoiceRepo.addUpInvoice(invoice);
 
         // Chuẩn bị phản hồi trả về với payment_url và deeplink
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("payment_url", (String) data.get("payUrl"));
-  
 
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+    }
+
+    public static String encodeToBase64(String input) {
+        return Base64.getEncoder().encodeToString(input.getBytes());
+    }
+
+    // Phương thức để giải mã chuỗi Base64 trở lại chuỗi gốc
+    public static String decodeFromBase64(String encoded) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encoded);
+        return new String(decodedBytes);
     }
 
 }

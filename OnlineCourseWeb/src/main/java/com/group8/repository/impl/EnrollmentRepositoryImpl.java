@@ -40,78 +40,87 @@ public class EnrollmentRepositoryImpl implements EnrollmentRepository {
     private LocalSessionFactoryBean factory;
 
     @Override
-public List<Enrollment> getEnrollments(Map<String, String> params) {
-    Session s = this.factory.getObject().getCurrentSession();
-    CriteriaBuilder b = s.getCriteriaBuilder();
-    CriteriaQuery<Enrollment> q = b.createQuery(Enrollment.class);
-    Root<Enrollment> root = q.from(Enrollment.class);
-    q.select(root);
+    public List<Enrollment> getEnrollments(Map<String, String> params) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Enrollment> q = b.createQuery(Enrollment.class);
+        Root<Enrollment> root = q.from(Enrollment.class);
+        q.select(root);
 
-    if (params != null) {
-        List<Predicate> predicates = new ArrayList<>();
-        
-        // Lọc theo ngày ghi danh
-        String fromCreatedDate = params.get("fromCreatedDate");
-        String toCreatedDate = params.get("toCreatedDate");
-        if (fromCreatedDate != null && !fromCreatedDate.isEmpty()) {
-            Date fromDate = java.sql.Date.valueOf(fromCreatedDate);
-            Predicate p1 = b.greaterThanOrEqualTo(root.get("createdDate"), fromDate);
-            predicates.add(p1);
-        }
-        if (toCreatedDate != null && !toCreatedDate.isEmpty()) {
-            Date toDate = java.sql.Date.valueOf(toCreatedDate);
-            Predicate p2 = b.lessThanOrEqualTo(root.get("createdDate"), toDate);
-            predicates.add(p2);
+        if (params != null) {
+            List<Predicate> predicates = new ArrayList<>();
+
+            // Lọc theo ngày ghi danh
+            String fromCreatedDate = params.get("fromCreatedDate");
+            String toCreatedDate = params.get("toCreatedDate");
+            if (fromCreatedDate != null && !fromCreatedDate.isEmpty()) {
+                Date fromDate = java.sql.Date.valueOf(fromCreatedDate);
+                Predicate p1 = b.greaterThanOrEqualTo(root.get("createdDate"), fromDate);
+                predicates.add(p1);
+            }
+            if (toCreatedDate != null && !toCreatedDate.isEmpty()) {
+                Date toDate = java.sql.Date.valueOf(toCreatedDate);
+                Predicate p2 = b.lessThanOrEqualTo(root.get("createdDate"), toDate);
+                predicates.add(p2);
+            }
+
+            // Lọc theo ngày cập nhật
+            String fromUpdatedDate = params.get("fromUpdatedDate");
+            String toUpdatedDate = params.get("toUpdatedDate");
+            if (fromUpdatedDate != null && !fromUpdatedDate.isEmpty()) {
+                Date fromDate = java.sql.Date.valueOf(fromUpdatedDate);
+                Predicate p3 = b.greaterThanOrEqualTo(root.get("updatedDate"), fromDate);
+                predicates.add(p3);
+            }
+            if (toUpdatedDate != null && !toUpdatedDate.isEmpty()) {
+                Date toDate = java.sql.Date.valueOf(toUpdatedDate);
+                Predicate p4 = b.lessThanOrEqualTo(root.get("updatedDate"), toDate);
+                predicates.add(p4);
+            }
+
+            // Lọc theo từ khóa trong tiêu đề khóa học
+            String kw = params.get("kw");
+            if (kw != null && !kw.isEmpty()) {
+                Join<Enrollment, Course> courseJoin = root.join("courseId"); // Ensure "course" is correct or use "courseId" if it's an ID
+                Predicate p5 = b.like(courseJoin.get("title"), String.format("%%%s%%", kw));
+                predicates.add(p5);
+            }
+
+            // Lọc theo trạng thái
+            String status = params.get("status");
+            if (status != null && !status.isEmpty()) {
+                EnrollmentStatus statusEnum = EnrollmentStatus.valueOf(status.toUpperCase());
+                Predicate p6 = b.equal(root.get("status"), statusEnum);
+                predicates.add(p6);
+            }
+
+            q.where(predicates.toArray(new Predicate[0]));
         }
 
-        // Lọc theo ngày cập nhật
-        String fromUpdatedDate = params.get("fromUpdatedDate");
-        String toUpdatedDate = params.get("toUpdatedDate");
-        if (fromUpdatedDate != null && !fromUpdatedDate.isEmpty()) {
-            Date fromDate = java.sql.Date.valueOf(fromUpdatedDate);
-            Predicate p3 = b.greaterThanOrEqualTo(root.get("updatedDate"), fromDate);
-            predicates.add(p3);
-        }
-        if (toUpdatedDate != null && !toUpdatedDate.isEmpty()) {
-            Date toDate = java.sql.Date.valueOf(toUpdatedDate);
-            Predicate p4 = b.lessThanOrEqualTo(root.get("updatedDate"), toDate);
-            predicates.add(p4);
+        Query query = s.createQuery(q);
+        int PAGE_SIZE = Integer.parseInt(env.getProperty("page.size.enrollment"));
+        if (params != null) {
+            String page = params.get("page");
+            if (page != null && !page.isEmpty()) {
+                int p = Integer.parseInt(page);
+                int start = (p - 1) * PAGE_SIZE;
+
+                query.setFirstResult(start);
+                query.setMaxResults(PAGE_SIZE);
+            }
         }
 
-        // Lọc theo từ khóa trong tiêu đề khóa học
-        String kw = params.get("kw");
-        if (kw != null && !kw.isEmpty()) {
-            Join<Enrollment, Course> courseJoin = root.join("courseId"); // Ensure "course" is correct or use "courseId" if it's an ID
-            Predicate p5 = b.like(courseJoin.get("title"), String.format("%%%s%%", kw));
-            predicates.add(p5);
-        }
-
-        // Lọc theo trạng thái
-        String status = params.get("status");
-        if (status != null && !status.isEmpty()) {
-            EnrollmentStatus statusEnum = EnrollmentStatus.valueOf(status.toUpperCase());
-            Predicate p6 = b.equal(root.get("status"), statusEnum);
-            predicates.add(p6);
-        }
-
-        q.where(predicates.toArray(new Predicate[0]));
+        return query.getResultList();
     }
 
-    Query query = s.createQuery(q);
-    int PAGE_SIZE = Integer.parseInt(env.getProperty("page.size.enrollment"));
-    if (params != null) {
-        String page = params.get("page");
-        if (page != null && !page.isEmpty()) {
-            int p = Integer.parseInt(page);
-            int start = (p - 1) * PAGE_SIZE;
-
-            query.setFirstResult(start);
-            query.setMaxResults(PAGE_SIZE);
+    @Override
+    public void addOrUpEnrollment(Enrollment enrollment) {
+        Session s = this.factory.getObject().getCurrentSession();
+        if (enrollment.getId() != null) {
+            s.update(enrollment);
+        } else {
+            s.save(enrollment);
         }
     }
-
-    return query.getResultList();
-}
-
 
 }

@@ -4,7 +4,6 @@
  */
 package com.group8.service;
 
-import com.group8.dto.EnrollmentDTO;
 import com.group8.pojo.Enrollment;
 import java.util.List;
 import java.util.Map;
@@ -14,6 +13,8 @@ import java.util.Map;
  * @author thang
  */
 public interface EnrollmentService {
-    List<Enrollment> getEnrollments(Map<String,String> params);
-    
+
+    List<Enrollment> getEnrollments(Map<String, String> params);
+
+    void addOrUpEnrollment(Enrollment enrollment);
 }
