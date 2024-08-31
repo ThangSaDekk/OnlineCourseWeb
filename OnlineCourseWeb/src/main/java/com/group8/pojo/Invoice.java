@@ -90,12 +90,21 @@ public class Invoice implements Serializable {
     @Size(min = 1, max = 255)
     @Column(name = "payer_email")
     private String payerEmail;
-    @OneToMany(mappedBy = "invoiceId")
+    @Column(name = "total")
+    private double total;
+    @OneToMany(fetch = FetchType.EAGER,mappedBy = "invoiceId")
     private Set<Enrollment> enrollmentSet;
     
     
     
 
+    public double getTotal() {
+        return total;
+    }
+
+    public void setTotal(double total) {
+        this.total = total;
+    }
     public Invoice() {
     }
 

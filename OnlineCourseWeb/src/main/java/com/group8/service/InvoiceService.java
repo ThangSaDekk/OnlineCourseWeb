@@ -9,6 +9,7 @@ import java.util.Map;
 import java.util.List;
 import com.group8.dto.EnrollmentDTO;
 import com.group8.dto.InvoiceDTO;
+import com.group8.dto.InvoiceStatsDTO;
 
 /**
  *
@@ -22,4 +23,5 @@ public interface InvoiceService {
     void addUpInvoice(Invoice invoice);
     List<Invoice> getAllInvoice(Map<String,String>params);
     List<EnrollmentDTO> getInvoiceById(int id);
+    List<InvoiceStatsDTO> calculateTotalAmount(int id);
 }

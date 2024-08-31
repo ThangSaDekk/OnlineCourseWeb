@@ -120,24 +120,29 @@ public class StatsRepositoryImpl implements StatsRepository {
 
     }
 
+    @Override
     public List<Object[]> statsRevenueByMonth() {
         Session s = this.factory.getObject().getCurrentSession();
         CriteriaBuilder b = s.getCriteriaBuilder();
         CriteriaQuery<Object[]> q = b.createQuery(Object[].class);
+
         Root<Invoice> rI = q.from(Invoice.class);
 
         q.where(b.equal(rI.get("status"), 1)); // Chỉ lấy hóa đơn đã thanh toán
 
         q.multiselect(
-                b.function("YEAR", Integer.class, rI.get("createdDate")),
-                b.function("MONTH", Integer.class, rI.get("createdDate")),
-                b.sum(rI.get("totalAmount")));
+            b.function("YEAR", Integer.class, rI.get("createdDate")),
+            b.function("MONTH", Integer.class, rI.get("createdDate")),
+            b.sum(rI.get("total"))
+        );
         q.groupBy(
-                b.function("YEAR", Integer.class, rI.get("createdDate")),
-                b.function("MONTH", Integer.class, rI.get("createdDate")));
+            b.function("YEAR", Integer.class, rI.get("createdDate")),
+            b.function("MONTH", Integer.class, rI.get("createdDate"))
+        );
         q.orderBy(
-                b.desc(b.function("YEAR", Integer.class, rI.get("createdDate"))),
-                b.asc(b.function("MONTH", Integer.class, rI.get("createdDate"))));
+            b.desc(b.function("YEAR", Integer.class, rI.get("createdDate"))),
+            b.asc(b.function("MONTH", Integer.class, rI.get("createdDate")))
+        );
 
         Query query = s.createQuery(q);
         return query.getResultList();

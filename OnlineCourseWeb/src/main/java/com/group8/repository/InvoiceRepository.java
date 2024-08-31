@@ -20,4 +20,6 @@ public interface InvoiceRepository {
     List<Invoice> getAllInvoice(Map<String, String> params);
 
     Invoice getInvoiceById(int id);
+    
+    Invoice calculateTotalAmount(int id);
 }

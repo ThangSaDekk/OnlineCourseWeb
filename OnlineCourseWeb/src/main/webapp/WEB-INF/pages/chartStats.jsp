@@ -66,45 +66,57 @@
                         <!-- DONUT CHART -->
                         <div class="card card-danger">
                             <div class="card-header">
-                                <h3 class="card-title">Donut Chart</h3>
+                                <h3 class="card-title">Column chart statistics by Month</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>      
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueColumnChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            <script>
+                                const columnLabels = [];
+                                const columnData = [];
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
+                                <c:forEach var="stat" items="${revenueStats}">
+                                columnLabels.push("${stat[1]}-${stat[0]}"); // Year-Month
+                                    columnData.push("${stat[2]}");   // Total Revenue
+                                </c:forEach>
+
+                                    const columnCtx = document.getElementById('revenueColumnChart').getContext('2d');
+                                    const revenueColumnChart = new Chart(columnCtx, {
+                                        type: 'bar', // Type of chart: bar chart
+                                        data: {
+                                            labels: columnLabels, // Year-Month
+                                            datasets: [{
+                                                    label: 'Total Revenue',
+                                                    data: columnData, // Revenue values
+                                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                                    borderWidth: 1
+                                                }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true // Start y-axis from zero
+                                                }
+                                            }
+                                        }
+                                    });
+                            </script>
                             </div>
-                            <div class="card-body">
-                                <canvas id="donutChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                            </div>
+                            
                             <!-- /.card-body -->
 
                         </div>
                         <!-- /.card -->
 
-                        <!-- PIE CHART -->
-                        <div class="card card-danger">
-                            <div class="card-header">
-                                <h3 class="card-title">Pie Chart</h3>
-
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <canvas id="pieChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
+                        
 
                     </div>
                     <!-- /.col (LEFT) -->
@@ -146,49 +158,57 @@
                         </div>
                         <!-- /.card -->
 
-                        <!-- BAR CHART -->
-                        <div class="card card-success">
-                            <div class="card-header">
-                                <h3 class="card-title">Bar Chart</h3>
-
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="barChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
-                        </div>
-                        <!-- /.card -->
+                       
 
                         <!-- STACKED BAR CHART -->
                         <div class="card card-success">
                             <div class="card-header">
-                                <h3 class="card-title">Stacked Bar Chart</h3>
+                            <h3 class="card-title">Domain chart statistics by Month</h3>
+                            <div class="card-tools">
+                                <button type="button" class="btn btn-tool" data-card-widget="collapse">
+                                    <i class="fas fa-minus"></i>
+                                </button>
+                                <button type="button" class="btn btn-tool" data-card-widget="remove">
+                                    <i class="fas fa-times"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="card-body">
+                            <canvas id="revenueAreaChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
+                            <script>
+                                const areaLabels = [];
+                                const areaData = [];
 
-                                <div class="card-tools">
-                                    <button type="button" class="btn btn-tool" data-card-widget="collapse">
-                                        <i class="fas fa-minus"></i>
-                                    </button>
-                                    <button type="button" class="btn btn-tool" data-card-widget="remove">
-                                        <i class="fas fa-times"></i>
-                                    </button>
-                                </div>
-                            </div>
-                            <div class="card-body">
-                                <div class="chart">
-                                    <canvas id="stackedBarChart" style="min-height: 250px; height: 250px; max-height: 250px; max-width: 100%;"></canvas>
-                                </div>
-                            </div>
-                            <!-- /.card-body -->
+                                <c:forEach var="stat" items="${revenueStats}">
+                                areaLabels.push("${stat[1]}-${stat[0]}"); // Year-Month
+                                    areaData.push("${stat[2]}");   // Total Revenue
+                                </c:forEach>
+
+                                    const areaCtx = document.getElementById('revenueAreaChart').getContext('2d');
+                                    const revenueAreaChart = new Chart(areaCtx, {
+                                        type: 'line', // Line chart will be used for area chart
+                                        data: {
+                                            labels: areaLabels, // Year-Month
+                                            datasets: [{
+                                                    label: 'Total Revenue',
+                                                    data: areaData, // Revenue values
+                                                    fill: true, // Fill the area under the line
+                                                    backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                                                    borderColor: 'rgba(54, 162, 235, 1)',
+                                                    borderWidth: 1,
+                                                    tension: 0.4 // Smooth line
+                                                }]
+                                        },
+                                        options: {
+                                            scales: {
+                                                y: {
+                                                    beginAtZero: true // Start y-axis from zero
+                                                }
+                                            }
+                                        }
+                                    });
+                            </script>
+                        </div>
                         </div>
                         <!-- /.card -->
 

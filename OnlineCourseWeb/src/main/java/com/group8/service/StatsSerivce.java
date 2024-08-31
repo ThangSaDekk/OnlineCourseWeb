@@ -18,4 +18,6 @@ public interface StatsSerivce {
     List<Object[]> statsEnrollmentByPeriod(Map<String, String> params);
     
     List<Object[]> statsEnrollmentGroupByCourse(Map<String, String> params);
+    
+    List<Object[]> stastRevenueByMonth();
 }
