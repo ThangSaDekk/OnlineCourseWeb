@@ -102,4 +102,10 @@ public class InvoiceRepositoryImpl implements InvoiceRepository {
         return s.get(Invoice.class, id);
     }
 
+    @Override
+    public Invoice calculateTotalAmount(int id) {
+        Session s = this.factory.getObject().getCurrentSession();
+        return s.get(Invoice.class, id);
+    }
+
 }

@@ -30,13 +30,13 @@ public class EnrollmentDTO {
     private Invoice invoiceId;
     private User userId;
     
-    private String invoiceNumber;
+    private String referenceCode;
     private String payerName;
     private String payerPhone;
     private String payerEmail;
 //    private String username;
 //    private String password;
-    private long totalAmount;
+    
     private String firstName;
     private String lastName;
     private String title;

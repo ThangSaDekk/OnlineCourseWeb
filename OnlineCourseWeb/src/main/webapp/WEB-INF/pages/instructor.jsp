@@ -45,11 +45,6 @@
     <!-- /.content-header -->
 
     <!-- Main content -->
-    <div class="card-body clearfix">
-        <a href="<c:url value="/instructor/add-up"/>" class="btn btn-sm btn-info float-right mr-5">Add Instructor</a>
-            <i class="fas fa-plus p-2">    </i>
-        </a>
-    </div>
     <div class="card container">
         <div class="card-header border-transparent">
             <h3 class="card-title">Instructor</h3>

@@ -132,6 +132,12 @@
                             </a>
                         </li>
                         <li class="nav-item">
+                            <a href="<c:url value="/instructor"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Instructor</p>
+                            </a>
+                        </li>
+                        <li class="nav-item">
                             <a href="<c:url value="/enrollments"/>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Enrollmet</p>
@@ -140,7 +146,7 @@
                         <li class="nav-item">
                             <a href="<c:url value="/invoice"/>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Enrollmet</p>
+                                <p>Invoice</p>
                             </a>
                         </li>
 

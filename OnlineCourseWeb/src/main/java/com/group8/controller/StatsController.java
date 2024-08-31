@@ -4,6 +4,7 @@
  */
 package com.group8.controller;
 
+import com.group8.repository.StatsRepository;
 import com.group8.service.StatsSerivce;
 import java.util.List;
 import java.util.Map;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 /**
@@ -40,17 +42,10 @@ public class StatsController {
 
         stats = this.statsService.statsEnrollmentGroupByCourse(params);
         model.addAttribute("enrollmentByCourseStats", stats);
+        
+        List<Object[]> revenueStats = statsService.stastRevenueByMonth();
+        model.addAttribute("revenueStats", revenueStats);
         return "chart";
 
     }
-    
-    // @Autowired
-    // private StatsRepository statsRepository;
-    
-    // @RequestMapping("/stats")
-    // public String viewStats(Model model){
-    //     List<Object[]> revenueStats = statsRepository.statsRevenueByMonth();
-    //     model.addAttribute("revenueStats", revenueStats);
-    //     return "stats";
-    // }
 }
