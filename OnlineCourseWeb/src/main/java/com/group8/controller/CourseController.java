@@ -18,7 +18,6 @@ import com.group8.service.ContentService;
 import com.group8.service.CourseService;
 import com.group8.service.InstructorService;
 import com.group8.service.StatsSerivce;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -57,7 +56,6 @@ public class CourseController {
     private Environment env;
     @Autowired
     private StatsSerivce statsService;
- 
 
     @ModelAttribute
     public void commAttrs(Model model) {
@@ -166,7 +164,7 @@ public class CourseController {
     public String addUpContentView(Model model, @PathVariable(value = "courseId") int id, @ModelAttribute(value = "addContentDTO") @Valid AddContentDTO addContentDTO,
             BindingResult rs, RedirectAttributes redirectAttributes) {
         System.out.println("Hello Content Receive: " + addContentDTO);
-         if (rs.hasErrors()) {
+        if (rs.hasErrors()) {
             return "add-up-content";
         }
         try {
@@ -177,34 +175,34 @@ public class CourseController {
             redirectAttributes.addFlashAttribute("errMsg", ex.getMessage());
             return "redirect:/courses/{courseId}/content/add-up";  // Chuyển hướng lại trang thêm/sửa khóa học
         }
-        
+
     }
-    
-    
+
     @GetMapping("/courses/{courseId}/content/{contentId}/add-up")
     public String sendContent(Model model, @PathVariable(value = "courseId") int id, @PathVariable(value = "contentId") int contentId) {
         model.addAttribute("addContentDTO", this.contentService.getContentById(contentId));
         System.out.println(this.contentService.getContentById(contentId));
         return "add-up-content";
     }
-    
-    
-    
-    // Todo: test vẽ biểu đồ
-    @GetMapping("courses/{courseId}/stats")
-    public String getCourseStats(@PathVariable("courseId") int courseId, Model model) {
-        // Giả lập dữ liệu thống kê
-        Map<String, Integer> contentStats = new HashMap<>();
-        contentStats.put("Bài giảng", 10);
-        contentStats.put("Quiz", 5);
-        contentStats.put("Assignment", 3);
-        contentStats.put("Test", 2);
 
-        // Thêm dữ liệu vào model
-        model.addAttribute("contentStats", contentStats);
-        model.addAttribute("courseId", courseId);
-
-        return "course"; // Tên của JSP mà bạn muốn trả về
-    }
+//    
+//    
+//    // Todo: test vẽ biểu đồ
+//    @GetMapping("courses/{courseId}/stats")
+//    public String getCourseStats(@PathVariable("courseId") int courseId, Model model) {
+//        // Giả lập dữ liệu thống kê
+//        Map<String, Integer> contentStats = new HashMap<>();
+//        contentStats.put("Bài giảng", 10);
+//        contentStats.put("Quiz", 5);
+//        contentStats.put("Assignment", 3);
+//        contentStats.put("Test", 2);
+//
+//        // Thêm dữ liệu vào model
+//        model.addAttribute("contentStats", contentStats);
+//        model.addAttribute("courseId", courseId);
+//
+//        return "course"; // Tên của JSP mà bạn muốn trả về
+//    }
+ 
 
 }

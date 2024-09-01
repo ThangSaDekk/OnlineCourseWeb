@@ -7,7 +7,6 @@ package com.group8.controller;
 import com.group8.components.JwtService;
 import com.group8.dto.AddUserDTO;
 import com.group8.dto.UserDTO;
-import com.group8.pojo.Instructor;
 import com.group8.pojo.User;
 import com.group8.service.InstructorService;
 import com.group8.service.UserService;
@@ -41,7 +40,7 @@ public class ApiUserController {
 
     @Autowired
     private JwtService jwtService;
-    
+
     @Autowired
     private UserService userService;
 
@@ -63,10 +62,9 @@ public class ApiUserController {
         return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/users", produces = MediaType.APPLICATION_JSON_VALUE)
-//            consumes = {MediaType.APPLICATION_JSON_VALUE},
-//            produces = {MediaType.APPLICATION_JSON_VALUE}
-
+    @PostMapping(path = "/users", consumes = {MediaType.APPLICATION_JSON_VALUE},
+            produces = {MediaType.APPLICATION_JSON_VALUE}
+    )
     public ResponseEntity<UserDTO> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {
         UserDTO userDTO = this.userService.addUser(params, avatar);
         return new ResponseEntity<>(userDTO, HttpStatus.CREATED);

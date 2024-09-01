@@ -28,7 +28,7 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
     "com.group8.controller",
     "com.group8.repository",
     "com.group8.service",
-    "com.group8.components"
+    "com.group8.components",
 })
 @Order(2)
 public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
@@ -92,7 +92,7 @@ public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
                 .accessDeniedPage("/403"); // Trang lỗi truy cập bị từ chối
 
         http.authorizeRequests().antMatchers("/api/**").permitAll()
-                .antMatchers("/").hasRole("ADMIN");
+                .antMatchers("/**").hasRole("ADMIN");
 
         http.csrf().disable();
     }

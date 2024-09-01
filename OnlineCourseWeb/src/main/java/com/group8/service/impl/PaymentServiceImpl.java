@@ -161,6 +161,7 @@ public class PaymentServiceImpl implements PaymentService {
         invoice.setPayerEmail(paymentDTO.getPayerEmail());
         invoice.setPayerName(paymentDTO.getPayerName());
         invoice.setPayerPhone(paymentDTO.getPhone());
+        invoice.setTotal(paymentDTO.getTotalAmount());
 
         this.invoiceRepo.addUpInvoice(invoice);
 

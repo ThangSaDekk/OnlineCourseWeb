@@ -27,9 +27,7 @@
         <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.1"></script>
-        <script src="https://cdn.ckeditor.com/4.16.2/standard/ckeditor.js"></script>
-        <script src="https://cdn.ckeditor.com/ckfinder/ckfinder.js"></script>
-
+        <script src="https://cdn.ckeditor.com/4.6.2/standard/ckeditor.js"></script>
 
 
 
@@ -220,10 +218,10 @@
                 });
             }
         </script>
-        
+
         <script>
             function deleteContent(endpoint, elementId) {
-                 var username = '<sec:authentication property="principal.username"/>';
+                var username = '<sec:authentication property="principal.username"/>';
                 var password = prompt("Vui lòng nhập mật khẩu để xóa nội dung:");
                 if (password === null) {
                     alert("Xóa nội dung không hợp lệ.");

@@ -1,7 +1,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-
+    
 <c:if test="${param.lang == 'vi'}">
     <fmt:setLocale value="vi_VN"/>
 </c:if>
@@ -9,7 +9,7 @@
     <fmt:setLocale value="en_US"/>
 </c:if>
 <fmt:setBundle basename="com.group8.lang.addUpCourse" var="bnd"/>
-<c:url value='/courses/add-up' var="action"/>
+<c:url value='/courses/add-up' var="action"/>   
 <div class="content-wrapper" style="overflow-y: auto;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -77,9 +77,8 @@
                             <label for="description"><fmt:message key="course.description" bundle="${bnd}"/></label>
                             <textarea name="description" id="description" class="form-control" rows="4">${addCourseDTO.description}</textarea>
                             <script>
-                                CKEDITOR.replace('description', {
-                                    filebrowserImageUploadUrl: '<c:url value="/img/"/>'
-                                });
+                                CKEDITOR.replace('description');
+                                
                             </script>
                         </div>
 
