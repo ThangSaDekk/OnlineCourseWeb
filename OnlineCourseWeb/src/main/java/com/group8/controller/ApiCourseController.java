@@ -4,6 +4,7 @@
  */
 package com.group8.controller;
 
+import com.group8.dto.AddUserDTO;
 import com.group8.dto.CourseDTO;
 import com.group8.pojo.Category;
 import com.group8.pojo.Course;
@@ -11,6 +12,8 @@ import com.group8.pojo.Enum.CourseStatus;
 import com.group8.pojo.Enum.CourseType;
 import com.group8.pojo.Instructor;
 import com.group8.service.CourseService;
+import com.group8.service.InstructorService;
+import com.group8.service.InvoiceService;
 import java.security.Principal;
 import java.util.List;
 import java.util.Map;
@@ -40,6 +43,9 @@ public class ApiCourseController {
 
     @Autowired
     private CourseService courseService;
+    
+    @Autowired
+    private InstructorService instructorService;
 
     @GetMapping("/courses")
     public ResponseEntity<List<CourseDTO>> list(@RequestParam Map<String, String> params, Principal principal) {
@@ -92,6 +98,15 @@ public class ApiCourseController {
     public void delete(@PathVariable(value = "courseId") int id) {
         this.courseService.deleteCourse(id);
     }
+    
+    @GetMapping("instructor/{instructorId}/courses")
+    public ResponseEntity<List<CourseDTO>> listCourseDTOByInstructor(@PathVariable(value="instructorId") int instructorId) { 
+    // Lấy danh sách khóa học của instructor
+        List<CourseDTO> courses = courseService.getCourseDTOByInstructor(instructorId);
+        return new ResponseEntity<>(this.courseService.getCourseDTOByInstructor(instructorId), HttpStatus.OK);
+    }
+    
+
 
 //    @Autowired
 //    private InvoiceService invoiceService;

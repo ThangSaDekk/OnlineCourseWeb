@@ -15,6 +15,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 /**
@@ -28,15 +29,12 @@ import org.springframework.web.multipart.commons.CommonsMultipartResolver;
     "com.group8.controller",
     "com.group8.repository",
     "com.group8.service",
-    "com.group8.components",
-})
+    "com.group8.components",})
 @Order(2)
 public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private UserDetailsService userDetailsService;
-
-  
 
     @Bean
     public CommonsMultipartResolver multipartResolver() {
@@ -45,7 +43,6 @@ public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
         return resolver;
     }
 
-    
     @Bean
     public BCryptPasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
@@ -73,6 +70,14 @@ public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        http.authorizeRequests().antMatchers("/api/**").permitAll()
+                .antMatchers("/").hasRole("ADMIN")
+                .antMatchers("/courses/**").hasRole("ADMIN")
+                .antMatchers("/invoice/**").hasRole("ADMIN")
+                .antMatchers("/enrollments/**").hasRole("ADMIN")
+                .antMatchers("/stats/**").hasRole("ADMIN")
+                .antMatchers("/instructor/**").hasRole("ADMIN");
+
         http.authorizeRequests()
                 .antMatchers("/login", "/dist/**", "/plugins/**").permitAll() // Cho phép truy cập vào trang đăng nhập và các tài nguyên tĩnh
                 .and()
@@ -90,9 +95,6 @@ public class SpringSecurityConfigs extends WebSecurityConfigurerAdapter {
                 .and()
                 .exceptionHandling()
                 .accessDeniedPage("/403"); // Trang lỗi truy cập bị từ chối
-
-        http.authorizeRequests().antMatchers("/api/**").permitAll()
-                .antMatchers("/").hasRole("ADMIN");
 
         http.csrf().disable();
     }

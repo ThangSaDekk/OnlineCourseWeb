@@ -121,6 +121,22 @@ public class CourseServiceImpl implements CourseService {
     }
 
     @Override
+    public List<CourseDTO> getCourseDTOByInstructor(int instructorId) {
+        // Lấy danh sách Course từ repository
+        List<Course> courses = this.courseRepo.getCourseDTOByInstructorId(instructorId);
+
+        // Kiểm tra nếu danh sách courses rỗng hoặc null
+        if (courses == null || courses.isEmpty()) {
+            return List.of(); // Trả về danh sách rỗng
+        }
+
+        // Sử dụng ModelMapper để chuyển đổi từ Course sang CourseDTO
+        return courses.stream()
+                .map(course -> modelMapper.map(course, CourseDTO.class))
+                .collect(Collectors.toList());
+    }
+
+
     public CourseDTO getCourseDTOByID(int id, Principal principal) {
         int userId = 0;
         if(principal != null){

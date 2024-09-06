@@ -4,6 +4,7 @@
  */
 package com.group8.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.group8.pojo.Enum.CourseType;
 import com.group8.pojo.Enum.CourseStatus;
 import java.io.Serializable;
@@ -15,6 +16,7 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -99,6 +101,7 @@ public class Course implements Serializable {
     @Size(max = 255)
     @Column(name = "img")
     private String img;
+    
     @JoinColumn(name = "category_id", referencedColumnName = "id")
     @ManyToOne(optional = false)
     private Category categoryId;
@@ -108,7 +111,7 @@ public class Course implements Serializable {
     @OneToMany(mappedBy = "courseId")
     private Set<Content> contentSet;
 
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "courseId")
+    @OneToMany(fetch = FetchType.EAGER,cascade = CascadeType.ALL, mappedBy = "courseId")
     private Set<Enrollment> enrollmentSet;
     
 

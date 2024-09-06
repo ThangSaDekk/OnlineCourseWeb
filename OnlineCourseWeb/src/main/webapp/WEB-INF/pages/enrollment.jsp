@@ -119,7 +119,7 @@
                                     <fmt:formatDate value="${enrollment.createdDate}" pattern="dd-MM-yyyy hh:mm:ss" />
                                 </td>
                                 <td>
-                                    <fmt:formatDate value="${enrollment.updatedDate}" pattern="dd-MM-yyyy hh:mm:ss" />
+                                    ${enrollment.progress}
                                 </td>
                             </tr>
                         </c:forEach>

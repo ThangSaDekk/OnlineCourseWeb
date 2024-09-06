@@ -38,7 +38,7 @@
                         <div class="row">
                             <div class="col-12">
                                 <h4>
-                                    <i class="fas fa-globe"></i> AdminLTE, Inc.
+                                    <i class="fas fa-globe"></i> CourseOnline, Inc.
                                     <small class="float-right">Date: <fmt:formatDate value="${currentDate}" pattern="yyyy-MM-dd"/></small>
                                 </h4>
                             </div>

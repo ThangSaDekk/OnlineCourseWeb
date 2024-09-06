@@ -21,12 +21,13 @@ const CourseDetail = () => {
   const [countContent, setCountContent] = useState(0);
   const [register, setRegister] = useState(false);
   const [gpa, setGpa] = useState(''); //Note: không cần này nữa
-
+  
   useEffect(() => {
     const fetchCourse = async () => {
       try {
         const response = await authAPIs().get(endpoints['course-details'](id));
         setCourse(response.data);
+        console.log(course);
         setRegister(response.data.register);
         setLoading(false); // Set loading to false when data is fetched
       } catch (err) {

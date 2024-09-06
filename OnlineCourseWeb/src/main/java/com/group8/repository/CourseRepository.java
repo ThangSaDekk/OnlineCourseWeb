@@ -4,6 +4,7 @@
  */
 package com.group8.repository;
 
+import com.group8.dto.CourseDTO;
 import com.group8.pojo.Course;
 import java.util.List;
 import java.util.Map;
@@ -23,5 +24,8 @@ public interface CourseRepository {
     void deleteCourse(int id);
     
     String getOrderInfor(String stringArray);
+    
+    List<Course> getCourseDTOByInstructorId(int instructorId);
+    
 
 }
