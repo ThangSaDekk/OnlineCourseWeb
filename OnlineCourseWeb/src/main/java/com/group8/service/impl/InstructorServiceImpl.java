@@ -7,7 +7,6 @@ package com.group8.service.impl;
 import com.group8.dto.AddUserDTO;
 import com.group8.dto.InstructorDTO;
 import com.group8.pojo.Instructor;
-import com.group8.pojo.User;
 import com.group8.repository.InstructorRepository;
 import com.group8.repository.UserRepository;
 import com.group8.service.InstructorService;

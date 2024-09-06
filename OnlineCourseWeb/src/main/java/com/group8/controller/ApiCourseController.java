@@ -6,7 +6,6 @@ package com.group8.controller;
 
 import com.group8.dto.AddUserDTO;
 import com.group8.dto.CourseDTO;
-import com.group8.dto.EnrollmentDTO;
 import com.group8.pojo.Category;
 import com.group8.pojo.Course;
 import com.group8.pojo.Enum.CourseStatus;
@@ -15,6 +14,7 @@ import com.group8.pojo.Instructor;
 import com.group8.service.CourseService;
 import com.group8.service.InstructorService;
 import com.group8.service.InvoiceService;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -49,9 +48,18 @@ public class ApiCourseController {
     private InstructorService instructorService;
 
     @GetMapping("/courses")
-    public ResponseEntity<List<CourseDTO>> list(Map<String, String> params) {
-        return new ResponseEntity<>(this.courseService.getCourseDTO(params), HttpStatus.OK);
+    public ResponseEntity<List<CourseDTO>> list(@RequestParam Map<String, String> params, Principal principal) {
+        params.put("status", CourseStatus.ACTIVE.name());
+       
+        return new ResponseEntity<>(this.courseService.getCourseDTO(params, principal), HttpStatus.OK);
     }
+    
+    
+    @RequestMapping("/courses/{courseId}")
+    public ResponseEntity<CourseDTO> retrive(@PathVariable(value = "courseId") int id, Principal principal){
+        return new ResponseEntity<>(this.courseService.getCourseDTOByID(id, principal), HttpStatus.OK);
+    }
+    
 
     @PostMapping(path = "/add-up",
             consumes = {MediaType.MULTIPART_FORM_DATA_VALUE},
@@ -91,7 +99,7 @@ public class ApiCourseController {
         this.courseService.deleteCourse(id);
     }
     
-    @GetMapping("/courses/{instructorId}")
+    @GetMapping("instructor/{instructorId}/courses")
     public ResponseEntity<List<CourseDTO>> listCourseDTOByInstructor(@PathVariable(value="instructorId") int instructorId) { 
     // Lấy danh sách khóa học của instructor
         List<CourseDTO> courses = courseService.getCourseDTOByInstructor(instructorId);
@@ -99,4 +107,17 @@ public class ApiCourseController {
     }
     
 
+
+//    @Autowired
+//    private InvoiceService invoiceService;
+//
+//    @GetMapping("/invoice/view-details/{invoiceId}")
+//    public ResponseEntity<List<EnrollmentDTO>> detailsViewInvoice(@PathVariable("invoiceId") int id) {
+//        List<EnrollmentDTO> enrollmentDTOs = invoiceService.getInvoiceById(id);
+//
+//        if (enrollmentDTOs == null || enrollmentDTOs.isEmpty()) {
+//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+//        }
+//        return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
+//    }
 }

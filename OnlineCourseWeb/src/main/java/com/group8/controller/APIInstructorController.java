@@ -5,13 +5,10 @@
 package com.group8.controller;
 
 import com.group8.dto.InstructorDTO;
-import com.group8.pojo.Instructor;
 import com.group8.service.InstructorService;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;

@@ -27,11 +27,11 @@ const Login = () => {
     const user = useContext(MyUserContext);
     const dispatch = useContext(MyDispatchContext);
 
-    useEffect(() => {
-        if (user !== null) {
-            navigate("/");  // Nếu người dùng đã đăng nhập, điều hướng về trang chính
-        }
-    }, [user, navigate]);
+    // useEffect(() => {
+    //     if (user !== null) {
+    //         navigate("/");  // Nếu người dùng đã đăng nhập, điều hướng về trang chính
+    //     }
+    // }, [user, navigate]);
 
     const login = async (e) => {
         e.preventDefault();
@@ -54,7 +54,7 @@ const Login = () => {
             if (user.data && user.data.userRole === "ROLE_INSTRUCTOR") {
                 navigate("/instructor-dashboard");
             } else {
-                navigate("/user-dashboard");
+                navigate("/");
             }
         } catch (error) {
             if (error.response && error.response.status === 401) {
@@ -64,7 +64,9 @@ const Login = () => {
             } else {
                 setErrorMessage('Đăng nhập thất bại. Vui lòng kiểm tra lại thông tin.');
             }
+          
         }
+    
     };
 
     const handleForgotPassword = async (e) => {

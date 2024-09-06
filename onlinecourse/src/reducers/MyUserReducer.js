@@ -7,10 +7,11 @@ const MyUserReducer = (currentState, action) => {
         case "logout":
             cookie.remove('access-token');
             cookie.remove('user');
-            cookie.remove('instructorId');
+            cookie.remove('cart');
             return null;
     }
     return currentState;
-};
+}
 
 export default MyUserReducer;
+

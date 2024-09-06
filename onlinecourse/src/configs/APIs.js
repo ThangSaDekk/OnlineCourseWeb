@@ -1,7 +1,7 @@
 import axios from "axios"
 import cookie from "react-cookies"
 
-const BASE_URL = 'http://localhost:8082/OnlineCourseWeb/api'
+const BASE_URL = 'http://localhost:8080/OnlineCourseWeb/api'
 
 export const endpoints = {
     'login': '/login/',
@@ -10,8 +10,9 @@ export const endpoints = {
     'verifyAccount': '/verifyAccount/',
     'verifyOtp':'/verifyOtp/',
     'changePassword': '/change-password/',
-    'courses':'/courses/',
-    'instructor':'/instructor/'
+    'courses':(id) => `/instructor/${id}/courses`,
+    'instructor':'/instructor/',
+    'enrollments':(id) => `/enrollments/${id}/`
 
 }
 console.info(cookie.load('token'))

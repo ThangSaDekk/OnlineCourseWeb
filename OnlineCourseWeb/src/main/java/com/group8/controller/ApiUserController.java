@@ -62,7 +62,7 @@ public class ApiUserController {
         return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
     }
 
-    @PostMapping(path = "/users", consumes = {MediaType.APPLICATION_JSON_VALUE},
+    @PostMapping(path = "/users", consumes = {MediaType.MULTIPART_FORM_DATA_VALUE}, 
             produces = {MediaType.APPLICATION_JSON_VALUE}
     )
     public ResponseEntity<UserDTO> addUser(@RequestParam Map<String, String> params, @RequestPart MultipartFile avatar) {

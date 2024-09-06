@@ -4,17 +4,21 @@
  */
 package com.group8.repository.impl;
 
+import com.group8.dto.CourseContentDTO;
 import com.group8.pojo.Content;
 import com.group8.pojo.Information;
 import com.group8.pojo.Lecture;
 import com.group8.pojo.Video;
 import com.group8.repository.ContentRepository;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Join;
+import javax.persistence.criteria.JoinType;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
 import org.hibernate.Session;
@@ -131,7 +135,8 @@ public class ContentRepositoryImpl implements ContentRepository {
     public void deleteContent(int id) {
         Session s = this.factory.getObject().getCurrentSession();
         Content c = this.getContentById(id);
-        s.delete(c);    }
+        s.delete(c);
+    }
 
     @Override
     public void deleteLecture(int id) {
@@ -150,7 +155,7 @@ public class ContentRepositoryImpl implements ContentRepository {
     @Override
     public Information getInformationById(int id) {
         Session s = this.factory.getObject().getCurrentSession();
-        return s.get(Information.class, id);  
+        return s.get(Information.class, id);
     }
 
     @Override
@@ -168,6 +173,17 @@ public class ContentRepositoryImpl implements ContentRepository {
         Session s = this.factory.getObject().getCurrentSession();
         Information i = this.getInformationById(id);
         s.delete(i);
+    }
+
+    @Override
+    public Content getContentDTOByCourseIdAndContentId(int contentId) {
+        Session s = this.factory.getObject().getCurrentSession();
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Content> q = b.createQuery(Content.class);
+        Root root = q.from(Content.class);
+        q.select(root).where(b.equal(root.get("id"), contentId));
+        Content c = s.createQuery(q).getSingleResult();
+        return c;
     }
 
 }

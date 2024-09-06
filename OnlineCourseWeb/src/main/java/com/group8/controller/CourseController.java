@@ -18,6 +18,7 @@ import com.group8.service.ContentService;
 import com.group8.service.CourseService;
 import com.group8.service.InstructorService;
 import com.group8.service.StatsSerivce;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
@@ -146,8 +147,8 @@ public class CourseController {
     }
 
     @GetMapping("/courses/{courseId}/content")
-    public String contentView(Model model, @PathVariable(value = "courseId") int id, @RequestParam Map<String, String> params) {
-        model.addAttribute("contents", this.contentService.getContentDTOsByCourseId(id, params));
+    public String contentView(Model model, @PathVariable(value = "courseId") int id, @RequestParam Map<String, String> params, Principal principal) {
+        model.addAttribute("contents", this.contentService.getContentDTOsByCourseId(id, params, principal));
         model.addAttribute("statsContent", this.statsService.statsContentOfCourse(id));
 
         return "content";

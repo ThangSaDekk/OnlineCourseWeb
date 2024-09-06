@@ -8,7 +8,7 @@ const ProtectedRoute = ({ roles, children }) => {
 
     // Kiểm tra nếu người dùng không đăng nhập hoặc vai trò không khớp
     if (!user || !roles.includes(user.userRole)) {
-        return <Navigate to="/login" />;
+        return <Navigate to="/" />;
     }
 
     return children;

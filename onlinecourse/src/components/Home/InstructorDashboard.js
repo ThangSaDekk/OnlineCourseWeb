@@ -2,12 +2,16 @@ import React, { useContext, useEffect, useState } from 'react';
 import { authAPIs, endpoints } from '../../configs/APIs';
 import '../Style/InstructorDashboard.css';  // Import CSS
 import { MyUserContext } from '../../App';  // Import context để lấy thông tin người dùng
+import '../../css/Spinner.css';
+import { Spinner } from 'react-bootstrap';
+import { useNavigate } from 'react-router';
 
 const InstructorDashboard = () => {
     const [courses, setCourses] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [instructorId, setInstructorId] = useState(null);
+    const navigate = useNavigate();
 
     // Lấy thông tin người dùng từ context
     const user = useContext(MyUserContext);
@@ -15,14 +19,12 @@ const InstructorDashboard = () => {
     // Hàm gọi API để lấy danh sách instructor
     const fetchInstructors = async () => {
         try {
-            const response = await authAPIs().get(endpoints['instructor']);  // Giả sử bạn có endpoint này
+            const response = await authAPIs().get(endpoints['instructor']);
             const instructors = response.data;
-            console.log(instructors);
             const userInstructor = instructors.find(inst => inst.userId.id === user.id);
-            
+
             if (userInstructor) {
                 setInstructorId(userInstructor.id);
-                
             } else {
                 throw new Error("Instructor ID not found for the current user");
             }
@@ -31,47 +33,41 @@ const InstructorDashboard = () => {
             setError("Unable to fetch instructors");
             setLoading(false);
         }
-
-        
     };
 
     // Hàm gọi API để lấy danh sách khóa học theo instructorId
     const fetchCoursesByInstructorId = async (instructorId) => {
         try {
-            const response = await authAPIs().get(`${endpoints.courses}${instructorId}`);
-            return response.data;
+            const response = await authAPIs().get(endpoints['courses'](instructorId));
+            setCourses(response.data);
         } catch (error) {
             console.error("Error fetching courses:", error);
-            throw error;
+            setError("Unable to fetch courses");
+        } finally {
+            setLoading(false);  // Hoàn tất tải dữ liệu
         }
     };
 
+    // Fetch instructor khi component mount
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                await fetchInstructors();  // Lấy danh sách instructor và set instructorId
-            } catch (error) {
-                setError("Unable to fetch instructor data");
-                setLoading(false);
-                return;
-            }
+        fetchInstructors();
+    }, []);
 
-            if (instructorId) {
-                try {
-                    const coursesData = await fetchCoursesByInstructorId(instructorId);
-                    setCourses(coursesData);
-                } catch (error) {
-                    setError("Unable to fetch courses");
-                }
-            }
-
-            setLoading(false);
-        };
-
-        fetchData();
+    // Fetch courses khi instructorId thay đổi và khác null
+    useEffect(() => {
+        if (instructorId) {
+            fetchCoursesByInstructorId(instructorId);
+        }
     }, [instructorId]);
 
-    if (loading) return <div>Loading...</div>;
+    // Kiểm tra loading và error
+    if (loading) {
+        return (
+            <div className="spinner-container">
+                <Spinner animation="grow" variant="primary" className="spinner-lg" />
+            </div>
+        );
+    }
     if (error) return <div>{error}</div>;
 
     return (
@@ -86,13 +82,13 @@ const InstructorDashboard = () => {
                                 <p>{course.description}</p>
                                 <p><strong>Status:</strong> {course.status}</p>
                                 <p><strong>Time:</strong> {course.timeExperted}</p>
-                                <button className="btn-view">Quản lý khóa học</button>
+                                <button className="btn-view" onClick={() => {navigate(`/enrollments/${course.id}`)}}>Quản lý khóa học</button>
                             </div>
                         </div>
                     ))}
                 </div>
             ) : (
-                <p>No courses found for this instructor.</p>
+                !loading && <p>No courses found for this instructor.</p>
             )}
         </div>
     );

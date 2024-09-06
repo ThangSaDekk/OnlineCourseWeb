@@ -75,11 +75,8 @@
 
                         <div class="form-group">
                             <label for="description"><fmt:message key="course.description" bundle="${bnd}"/></label>
-                            <textarea name="description" id="description" class="form-control" rows="4">${addCourseDTO.description}</textarea>
-                            <script>
-                                CKEDITOR.replace('description');
-                                
-                            </script>
+                            <form:textarea path="description" id="description" class="form-control" rows="4"/>
+       
                         </div>
 
                         <div class="form-group">
