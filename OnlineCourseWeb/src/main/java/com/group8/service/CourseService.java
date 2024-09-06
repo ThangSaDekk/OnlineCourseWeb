@@ -21,4 +21,5 @@ public interface CourseService {
     AddCourseDTO getCourseById(int id);
     void deleteCourse(int id);
     Course getCourseByID(int id);
+    List<CourseDTO> getCourseDTOByInstructor(int instructorId);
 }

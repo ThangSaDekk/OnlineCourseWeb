@@ -60,9 +60,7 @@ public class InstructorServiceImpl implements InstructorService{
     @Override
     public AddUserDTO getInstructorById(int id) {
         Instructor instructor = this.instructorRepo.getInstructorById(id);
-        AddUserDTO addUserDTO = new AddUserDTO();
-        
-
+        AddUserDTO addUserDTO = new AddUserDTO();        
         addUserDTO.setId(instructor.getId());
         addUserDTO.setIdInstructor(instructor.getUserId().getId());
         addUserDTO.setFirstName(instructor.getUserId().getFirstName());

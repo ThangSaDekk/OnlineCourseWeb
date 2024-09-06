@@ -4,6 +4,7 @@
  */
 package com.group8.repository.impl;
 
+import com.group8.dto.CourseDTO;
 import com.group8.pojo.Course;
 import com.group8.pojo.Enum.CourseStatus;
 import com.group8.pojo.Enum.CourseType;
@@ -12,6 +13,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -157,4 +159,32 @@ public class CourseRepositoryImpl implements CourseRepository {
         return String.join(", ", titles);
     }
 
+    @Override
+    public List<Course> getCourseDTOByInstructorId(int instructorId) {
+        // Mở session hiện tại
+        Session session = this.factory.getObject().getCurrentSession();
+
+        // Tạo CriteriaBuilder để xây dựng câu truy vấn
+        CriteriaBuilder builder = session.getCriteriaBuilder();
+
+        // Tạo CriteriaQuery cho đối tượng Course
+        CriteriaQuery<Course> query = builder.createQuery(Course.class);
+
+        // Xác định "Root" (bảng Course)
+        Root<Course> root = query.from(Course.class);
+        query.select(root);
+
+        // Tạo điều kiện WHERE để lọc theo instructorId
+        Predicate instructorPredicate = builder.equal(root.get("instructorId"), instructorId);
+
+        // Áp dụng điều kiện vào câu truy vấn
+        query.where(instructorPredicate);
+        
+        // Thực thi truy vấn bằng cách sử dụng TypedQuery
+        TypedQuery<Course> typedQuery = session.createQuery(query);
+        return typedQuery.getResultList();
+    }
+
+
+ 
 }

@@ -4,6 +4,7 @@
  */
 package com.group8.pojo;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Set;
@@ -50,7 +51,6 @@ import org.springframework.web.multipart.MultipartFile;
     @NamedQuery(name = "User.findByCreatedDate", query = "SELECT u FROM User u WHERE u.createdDate = :createdDate"),
     @NamedQuery(name = "User.findByUpdatedDate", query = "SELECT u FROM User u WHERE u.updatedDate = :updatedDate")})
 public class User implements Serializable {
-    
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -118,11 +118,11 @@ public class User implements Serializable {
     private Instructor instructor;
     @Transient
     private MultipartFile file;
-    
+
     public MultipartFile getFile() {
         return file;
     }
-    
+
     public void setFile(MultipartFile file) {
         this.file = file;
     }
@@ -293,7 +293,7 @@ public class User implements Serializable {
     @XmlTransient
     public Set<Enrollment> getEnrollmentSet() {
         return enrollmentSet;
-}
+    }
 
     public void setEnrollmentSet(Set<Enrollment> enrollmentSet) {
         this.enrollmentSet = enrollmentSet;

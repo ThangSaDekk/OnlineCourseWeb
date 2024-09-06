@@ -4,6 +4,7 @@
  */
 package com.group8.controller;
 
+import com.group8.dto.AddUserDTO;
 import com.group8.dto.CourseDTO;
 import com.group8.dto.EnrollmentDTO;
 import com.group8.pojo.Category;
@@ -12,6 +13,7 @@ import com.group8.pojo.Enum.CourseStatus;
 import com.group8.pojo.Enum.CourseType;
 import com.group8.pojo.Instructor;
 import com.group8.service.CourseService;
+import com.group8.service.InstructorService;
 import com.group8.service.InvoiceService;
 import java.util.List;
 import java.util.Map;
@@ -42,8 +44,11 @@ public class ApiCourseController {
 
     @Autowired
     private CourseService courseService;
+    
+    @Autowired
+    private InstructorService instructorService;
 
-        @GetMapping("/courses")
+    @GetMapping("/courses")
     public ResponseEntity<List<CourseDTO>> list(Map<String, String> params) {
         return new ResponseEntity<>(this.courseService.getCourseDTO(params), HttpStatus.OK);
     }
@@ -86,17 +91,12 @@ public class ApiCourseController {
         this.courseService.deleteCourse(id);
     }
     
-//    @Autowired
-//    private InvoiceService invoiceService;
-//
-//    @GetMapping("/invoice/view-details/{invoiceId}")
-//    public ResponseEntity<List<EnrollmentDTO>> detailsViewInvoice(@PathVariable("invoiceId") int id) {
-//        List<EnrollmentDTO> enrollmentDTOs = invoiceService.getInvoiceById(id);
-//
-//        if (enrollmentDTOs == null || enrollmentDTOs.isEmpty()) {
-//            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-//        }
-//        return new ResponseEntity<>(enrollmentDTOs, HttpStatus.OK);
-//    }
+    @GetMapping("/courses/{instructorId}")
+    public ResponseEntity<List<CourseDTO>> listCourseDTOByInstructor(@PathVariable(value="instructorId") int instructorId) { 
+    // Lấy danh sách khóa học của instructor
+        List<CourseDTO> courses = courseService.getCourseDTOByInstructor(instructorId);
+        return new ResponseEntity<>(this.courseService.getCourseDTOByInstructor(instructorId), HttpStatus.OK);
+    }
+    
 
 }
