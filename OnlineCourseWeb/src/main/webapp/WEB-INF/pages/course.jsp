@@ -9,9 +9,11 @@
             <div class="row mb-2">
                 <div class="col-sm-6">
                     <div class="card-body clearfix float-sm-left">
-                        <a href="<c:url value='/courses/add-up'/>" class="btn btn-lg btn-success float-right mr-5" style="font-size: 1.25rem;">
-                            <i class="fas fa-plus p-2"></i> <b>Add Course</b>
+                        <a href="<c:url value='/courses/add-up'/>" class="btn btn-sm btn-success float-left p-3">
+                            <i class="fas fa-plus-circle"></i> <!-- Bi?u t??ng thêm n?i dung -->
                         </a>
+
+
                     </div>
                 </div><!-- /.col -->
                 <div class="col-sm-6">

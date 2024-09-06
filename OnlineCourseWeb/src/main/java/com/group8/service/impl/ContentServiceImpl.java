@@ -7,13 +7,19 @@ package com.group8.service.impl;
 import com.group8.dto.AddContentDTO;
 import com.group8.dto.ContentDTO;
 import com.group8.pojo.Content;
+import com.group8.pojo.Enrollment;
 import com.group8.pojo.Enum.EntityType;
 import com.group8.pojo.Information;
 import com.group8.pojo.Lecture;
 import com.group8.pojo.Video;
+import com.group8.pojo.Process;
 import com.group8.repository.ContentRepository;
 import com.group8.repository.CourseRepository;
+import com.group8.repository.EnrollmentRepository;
+import com.group8.repository.ProcessRepository;
+import com.group8.repository.UserRepository;
 import com.group8.service.ContentService;
+import java.security.Principal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -21,6 +27,7 @@ import java.util.List;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestBody;
 
 /**
  *
@@ -35,14 +42,27 @@ public class ContentServiceImpl implements ContentService {
     @Autowired
     private CourseRepository courseRepo;
 
+    @Autowired
+    private UserRepository userRepo;
+
+    @Autowired
+    private ProcessRepository processRepo;
+
+    @Autowired
+    private EnrollmentRepository enrollmentRepo;
+
     @Override
-    public List<ContentDTO> getContentDTOsByCourseId(int id, Map<String, String> params) {
+    public List<ContentDTO> getContentDTOsByCourseId(int id, Map<String, String> params, Principal principal) {
+        int userId = 0;
+        if (principal != null) {
+            userId = this.userRepo.getUserByUsername(principal.getName()).getId();
+        }
         List<Content> contents = this.contentRepo.getContentByCourseId(id, params);
-        System.out.println(contents);
         List<ContentDTO> contentDTOs = new ArrayList<>();
 
         for (Content content : contents) {
             ContentDTO dto = ContentDTO.fromContent(content, contentRepo);
+            dto.setPoint(this.processRepo.checkProcess(userId, content.getId()));
             contentDTOs.add(dto);
         }
 
@@ -188,5 +208,50 @@ public class ContentServiceImpl implements ContentService {
 
         }
         this.contentRepo.deleteContent(id);
+    }
+
+    @Override
+    public ContentDTO getContentDTOsByCourseIdAndContentId(int id, int contentId, Principal principal) {
+        int userId = 0;
+        if (principal != null) {
+            userId = this.userRepo.getUserByUsername(principal.getName()).getId();
+        }
+        boolean isEnrolled = this.enrollmentRepo.checkEnrollment(id, userId);
+        if (isEnrolled) {
+            int point = this.processRepo.checkProcess(userId, contentId);
+            ContentDTO dto = ContentDTO.fromContent(this.contentRepo.getContentDTOByCourseIdAndContentId(contentId), contentRepo);
+            dto.setPoint(point);
+            return dto;
+        }
+        return null;
+    }
+
+    @Override
+    public boolean handleMarkCompleted(int courseId, int contentId, Principal principal, Map<String, String> processData) {
+        try {
+            int userId = 0;
+            if (principal != null) {
+                userId = this.userRepo.getUserByUsername(principal.getName()).getId();
+            }
+            boolean isEnrolled = this.enrollmentRepo.checkEnrollment(courseId, userId);
+            int ponitProces = this.processRepo.checkProcess(userId, contentId);
+            if (isEnrolled && ponitProces < 0) {
+                Process p = new Process();
+                p.setContentId(this.contentRepo.getContentById(contentId));
+                p.setCreatedDate(new Date());
+                p.setUpdatedDate(new Date());
+                p.setUserId(this.userRepo.getUserByID(userId));
+                p.setPoint(Integer.parseInt(processData.get("point")));
+                this.processRepo.addUpProcess(p);
+                Enrollment enrollment = this.enrollmentRepo.getEnrollmentByCourseIdAndUserId(courseId, userId);
+                enrollment.setProgress(enrollment.getProgress() + 1);
+                this.enrollmentRepo.addOrUpEnrollment(enrollment);
+                return true;
+            }
+        } catch (NumberFormatException e) {
+            return false;
+        }
+        return false;
+
     }
 }

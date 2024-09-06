@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+import javax.persistence.NoResultException;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -121,6 +122,65 @@ public class EnrollmentRepositoryImpl implements EnrollmentRepository {
         } else {
             s.save(enrollment);
         }
+    }
+
+    @Override
+    public boolean checkEnrollment(int courseId, int userId) {
+        Session session = this.factory.getObject().getCurrentSession();
+        if (userId == 0) {
+            return false;
+        }
+        // Sử dụng CriteriaBuilder để tạo truy vấn
+        CriteriaBuilder cb = session.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = cb.createQuery(Long.class);
+        Root<Enrollment> root = cq.from(Enrollment.class);
+
+        // Xác định điều kiện WHERE
+        cq.select(cb.count(root))
+                .where(
+                        cb.equal(root.get("courseId"), courseId),
+                        cb.equal(root.get("userId"), userId)
+                );
+
+        // Thực thi truy vấn và lấy kết quả
+        Long count = session.createQuery(cq).getSingleResult();
+
+        return count > 0;
+
+    }
+
+    @Override
+    public Enrollment getEnrollmentByCourseIdAndUserId(int courseId, int userId) {
+        // Get the current session
+        Session s = this.factory.getObject().getCurrentSession();
+
+        // Ensure userId is valid, otherwise return null
+        if (userId == 0) {
+            return null;
+        }
+
+        // Create CriteriaBuilder and CriteriaQuery
+        CriteriaBuilder b = s.getCriteriaBuilder();
+        CriteriaQuery<Enrollment> q = b.createQuery(Enrollment.class);
+        Root<Enrollment> root = q.from(Enrollment.class);
+
+        // Build the query with conditions
+        q.select(root).where(
+                b.equal(root.get("courseId"), courseId),
+                b.equal(root.get("userId"), userId)
+        );
+
+        // Execute the query and handle potential NoResultException
+        Enrollment enrollment = null;
+        try {
+            enrollment = s.createQuery(q).getSingleResult();
+        } catch (NoResultException ex) {
+            // Handle the exception: No entity found for the query
+            // You can return null or handle it in another way if needed
+            System.out.println("No enrollment found for the given courseId and userId.");
+        }
+
+        return enrollment;
     }
 
 }

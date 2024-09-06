@@ -274,6 +274,7 @@ public class Course implements Serializable {
     /**
      * @return the file
      */
+    
     public MultipartFile getFile() {
         return file;
     }

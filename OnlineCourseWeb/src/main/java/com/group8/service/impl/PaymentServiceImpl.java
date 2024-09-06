@@ -8,6 +8,8 @@ import com.group8.repository.CourseRepository;
 import com.group8.repository.InvoiceRepository;
 import com.group8.service.PaymentService;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -26,6 +28,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.env.Environment;
 import org.springframework.http.HttpStatus;
 
 @Service
@@ -38,7 +41,7 @@ public class PaymentServiceImpl implements PaymentService {
     private final String momoIpnUrl = "/payments/ipn-momo/";
     private final String momoRequestType = "captureWallet";
     private final String momoEndpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
-
+    
     @Autowired
     private PaymentService paymentService;
 
@@ -47,7 +50,7 @@ public class PaymentServiceImpl implements PaymentService {
     
     @Autowired
     private CourseRepository courseRepo;
-
+    
     @Override
     public ResponseEntity<String> pay(PaymentDTO paymentDTO, HttpServletRequest request) throws Exception {
         if (paymentDTO == null) {
@@ -58,7 +61,7 @@ public class PaymentServiceImpl implements PaymentService {
         String orderId = paymentDTO.getPaymentChannel() + requestId;
         String orderInfo = this.courseRepo.getOrderInfor(paymentDTO.getCourseCode());
         String amount = String.valueOf(paymentDTO.getTotalAmount());
-        String url = "http://127.0.0.1:8080/OnlineCourseWeb";
+        String url = "http://localhost:8080/OnlineCourseWeb";
         int userId = paymentDTO.getUserId();
         String courseCode = String.valueOf(userId)+","+paymentDTO.getCourseCode();
         System.out.println("Hello check:" + courseCode);
@@ -85,7 +88,6 @@ public class PaymentServiceImpl implements PaymentService {
         HttpEntity<String> requestEntity = new HttpEntity<>(jsonData, headers);
         RestTemplate restTemplate = new RestTemplate();
 
-        // Send the request and get the response as a String
         ResponseEntity<String> response = restTemplate.exchange(momoEndpoint, HttpMethod.POST, requestEntity, String.class);
 
         return response;
@@ -115,9 +117,8 @@ public class PaymentServiceImpl implements PaymentService {
             throw new Exception("Error generating signature", e);
         }
     }
-//
-//    @Override
-//    public String getDomainUrl(HttpServletRequest request) throws URISyntaxException {
+
+//    public static String getDomainUrl(HttpServletRequest request) throws URISyntaxException {
 //        // Xây dựng URL đầy đủ từ HttpServletRequest
 //        String fullUrl = request.getRequestURL().toString();
 //
@@ -165,9 +166,11 @@ public class PaymentServiceImpl implements PaymentService {
 
         this.invoiceRepo.addUpInvoice(invoice);
 
-        // Chuẩn bị phản hồi trả về với payment_url và deeplink
+        // Chuẩn bị phản hồi trả về với payment_url
         Map<String, String> responseBody = new HashMap<>();
         responseBody.put("payment_url", (String) data.get("payUrl"));
+        responseBody.put("requestId", (String) data.get("requestId"));
+        
 
         return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
     }

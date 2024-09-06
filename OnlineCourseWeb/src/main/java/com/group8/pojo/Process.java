@@ -147,5 +147,5 @@ public class Process implements Serializable {
     public String toString() {
         return "com.group8.pojo.Process[ id=" + id + " ]";
     }
-    
+
 }

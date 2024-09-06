@@ -27,7 +27,8 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
     "com.group8.controller",
     "com.group8.repository",
     "com.group8.service",
-    "com.group8.components"})
+    "com.group8.components"
+})
 @Order(1)
 public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
 
@@ -59,12 +60,16 @@ public class JwtSecurityConfig extends WebSecurityConfigurerAdapter {
         http.csrf().ignoringAntMatchers("/api/**");
         http.authorizeRequests().antMatchers("/api/login/**").permitAll();
         http.authorizeRequests().antMatchers("/api/users/**").permitAll();
+        http.authorizeRequests().antMatchers("/payments/**").permitAll();
+        http.authorizeRequests().antMatchers("/api/courses/**").permitAll();
+
 //        http.authorizeRequests().antMatchers("/api/invoice/**").permitAll();
         http.authorizeRequests().antMatchers("/api/verifyAccount/**").permitAll();
         http.authorizeRequests().antMatchers("/api/change-password/**").permitAll();
         http.antMatcher("/api/**").httpBasic().authenticationEntryPoint(restServicesEntryPoint()).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and().authorizeRequests()
-                .antMatchers(HttpMethod.DELETE, "/api/**").access("hasRole('ROLE_ADMIN') or hasRole('ROLE_STUDENT')").and()
+                .antMatchers(HttpMethod.DELETE, "/api/**").access("hasRole('ROLE_ADMIN')")
+                .antMatchers(HttpMethod.POST, "/api/**").hasAnyRole("ROLE_STUDENT", "ROLE_ADMIN").and()
                 .addFilterBefore(jwtAuthenticationTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().accessDeniedHandler(customAccessDeniedHandler());
     }

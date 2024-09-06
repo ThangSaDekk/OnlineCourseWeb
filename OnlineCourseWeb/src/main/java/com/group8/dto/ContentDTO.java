@@ -32,6 +32,7 @@ public class ContentDTO {
     private Date createdDate;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private Date updatedDate;
+    private int point;
 
     public static ContentDTO fromContent(Content content, ContentRepository contentRepo) {
         ContentDTO dto = new ContentDTO();

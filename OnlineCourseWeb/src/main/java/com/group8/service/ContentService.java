@@ -6,6 +6,7 @@ package com.group8.service;
 
 import com.group8.dto.AddContentDTO;
 import com.group8.dto.ContentDTO;
+import java.security.Principal;
 import java.util.List;
 import java.util.Map;
 
@@ -15,7 +16,7 @@ import java.util.Map;
  */
 public interface ContentService {
 
-    public List<ContentDTO> getContentDTOsByCourseId(int id, Map<String, String> params);
+    public List<ContentDTO> getContentDTOsByCourseId(int id, Map<String, String> params, Principal principal);
 
     void addUpContent(AddContentDTO addContentDTO);
 
@@ -24,5 +25,9 @@ public interface ContentService {
     public String removeLastCharacter(String str);
 
     void deleteContent(int id);
+    
+    ContentDTO getContentDTOsByCourseIdAndContentId(int id, int contentId, Principal principal);
+    
+    boolean handleMarkCompleted(int courseId, int contentId, Principal principal, Map<String, String> processData);
 
 }

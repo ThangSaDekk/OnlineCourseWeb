@@ -23,7 +23,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
     "com.group8.controller",
     "com.group8.repository",
     "com.group8.service",
-    
 }
 )
 public class WebAppContextConfigs implements WebMvcConfigurer {
