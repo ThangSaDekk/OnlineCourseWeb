@@ -146,8 +146,7 @@
                                     <a href="<c:url value="/courses/${course.id}/add-up"/>" class="text-primary mr-2" title="Edit"><i class="fas fa-edit"></i></a>
                                     <a href="<c:url value="/courses/${course.id}/content"/>" class="text-success mr-2" title="View"><i class="fas fa-eye"></i></a>
                                         <c:url value="/api/courses/${course.id}/" var="cD" />
-                                        <c:url value="course${course.id}" var="cE" />
-                                    <a href="#" onclick="deleteCourse('${cD}', '${cE}')" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
+                                    <a href="#" onclick="deleteElement('${cD}')" class="text-danger" title="Delete"><i class="fas fa-trash"></i></a>
 
                                 </td>
                             </tr>

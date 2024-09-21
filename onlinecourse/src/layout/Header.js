@@ -33,23 +33,28 @@ const Header = () => {
     cartDispatch({ type: "reset" });
     dispatch({ type: "logout" });
     nav('/');
-
   };
 
   return (
     <Navbar expand="lg" bg="dark" variant="dark" className='mb-3 p-3'>
       <Container>
-        <Navbar.Brand as={Link} to="/">E-Courses Website</Navbar.Brand>
+        <Navbar.Brand >E-Courses Website</Navbar.Brand>
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="me-auto">
-            <Link className='nav-link' to="/">Trang chủ</Link>
-            <NavDropdown title="Danh mục" id="basic-nav-dropdown">
-              {categories.map(c => {
-                const url = `/courses?cateId=${c.id}`;
-                return <Link to={url} className='dropdown-item' key={c.id}>{c.name}</Link>;
-              })}
-            </NavDropdown>
+            {user && user.userRole === 'ROLE_INSTRUCTOR' ? (
+              <Link className='nav-link' to="/instructor-dashboard">Quản lý khóa học</Link>
+            ) : (
+              <>
+                <Link className='nav-link' to="/">Trang chủ</Link>
+                <NavDropdown title="Danh mục" id="basic-nav-dropdown">
+                  {categories.map(c => {
+                    const url = `?cateId=${c.id}`;
+                    return <Link to={url} className='dropdown-item' key={c.id}>{c.name}</Link>;
+                  })}
+                </NavDropdown>
+              </>
+            )}
           </Nav>
           <Nav className="ml-auto d-flex align-items-center">
             {user === null ? (
@@ -70,9 +75,11 @@ const Header = () => {
                 <Button variant='danger' onClick={handleLogout}>
                   <FontAwesomeIcon icon={faSignOutAlt} /> Đăng xuất
                 </Button>
-                <Link className='nav-link text-danger d-flex align-items-center ms-3' to="/cart">
-                  <FontAwesomeIcon icon={faCartShopping} /> <Badge bg='success' className="ms-2">{cartCounter}</Badge>
-                </Link>
+                {user.userRole === 'ROLE_STUDENT' && (
+                  <Link className='nav-link text-danger d-flex align-items-center ms-3' to="/cart">
+                    <FontAwesomeIcon icon={faCartShopping} /> <Badge bg='success' className="ms-2">{cartCounter}</Badge>
+                  </Link>
+                )}
               </>
             )}
           </Nav>

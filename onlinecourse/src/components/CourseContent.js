@@ -42,7 +42,7 @@ const CourseContent = () => {
         setLoading(false);
         alert('Nội dung đã được đánh dấu là hoàn thành.');
         setIsCompleted(true);
-        
+
       }
     } catch (error) {
       console.error('Lỗi khi đánh dấu hoàn thành:', error);
@@ -64,7 +64,10 @@ const CourseContent = () => {
           Trình duyệt của bạn không hỗ trợ thẻ video.
         </video>
       );
-    } else {
+    } else if (content.entityType === 'INFORMATION') {
+      return <div dangerouslySetInnerHTML={{ __html: content.content.content }} style={{ width: '800px' }} />;
+    }
+    else {
       return <p>Loại nội dung không được hỗ trợ.</p>;
     }
   };

@@ -1,16 +1,17 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
-    
+
 <c:if test="${param.lang == 'vi'}">
     <fmt:setLocale value="vi_VN"/>
 </c:if>
 <c:if test="${param.lang == 'en'}">
     <fmt:setLocale value="en_US"/>
 </c:if>
-<fmt:setBundle basename="com.group8.lang.addUpCourse" var="bnd"/>
+<fmt:setBundle basename="com.nvt.lang.addUpCourse" var="bnd"/>
 <c:url value='/courses/add-up' var="action"/>   
 <div class="content-wrapper" style="overflow-y: auto;">
+
     <!-- Content Header (Page header) -->
     <section class="content-header">
         <div class="container-fluid">
@@ -36,14 +37,17 @@
             </div>
         </div><!-- /.container-fluid -->
     </section>
+    <c:if test="${not empty errors}">
 
+        <div class="alert alert-danger container">
+            <strong>Error List:</strong><br>
+            <c:forEach var="error" items="${errors}" varStatus="index">
+                Error ${index.index+1}. ${error.defaultMessage} <br> 
+            </c:forEach>
+        </div>
+    </c:if>
     <!-- Main content -->
     <section class="content">
-        <c:if test="${not empty errMsg}">
-            <div class="alert alert-danger">
-                ${errMsg}
-            </div>
-        </c:if>
         <div>
             <div class="card card-primary">
                 <div class="card-header">
@@ -64,6 +68,7 @@
                 </div>
                 <div class="card-body">
                     <!-- Form thêm khóa h?c -->
+
                     <form:form method="POST" modelAttribute="addCourseDTO" enctype="multipart/form-data" action="${action}">
                         <form:hidden path="id" />
                         <form:hidden path="img" />
@@ -76,7 +81,7 @@
                         <div class="form-group">
                             <label for="description"><fmt:message key="course.description" bundle="${bnd}"/></label>
                             <form:textarea path="description" id="description" class="form-control" rows="4"/>
-       
+
                         </div>
 
                         <div class="form-group">

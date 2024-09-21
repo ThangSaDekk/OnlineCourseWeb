@@ -20,8 +20,6 @@ const CourseDetail = () => {
   const [progress, setProgress] = useState(0);
   const [countContent, setCountContent] = useState(0);
   const [register, setRegister] = useState(false);
-  const [gpa, setGpa] = useState(''); //Note: không cần này nữa
-  
   useEffect(() => {
     const fetchCourse = async () => {
       try {
@@ -37,7 +35,7 @@ const CourseDetail = () => {
     };
 
     fetchCourse();
-  }, [id]);
+  }, [course, id]);
 
   useEffect(() => {
     const fetchContents = async () => {
@@ -45,12 +43,7 @@ const CourseDetail = () => {
         const response = await authAPIs().get(endpoints['content'](id));
         setContents(response.data);
         setCountContent(response.data.length);
-        // note: không cần tính nữa 
-        if (response.data.length > 0) {
-          const totalPoints = response.data.reduce((acc, content) => acc + content.point, 0);
-          const averagePoint = totalPoints / response.data.length;
-          setGpa(calculateGPA(averagePoint));
-        }
+
       } catch (error) {
         console.error("Error fetching course content:", error);
       }
@@ -75,14 +68,7 @@ const CourseDetail = () => {
   }, [id, user]);
 
 
-  // Note: Bỏ hàm tính này luôn
-  const calculateGPA = (averagePoint) => {
-    if (averagePoint >= 9) return "A+";
-    if (averagePoint >= 8) return "A";
-    if (averagePoint >= 7) return "B+";
-    if (averagePoint >= 6) return "B";
-    return "None";
-  };
+
 
   const getIcon = (entityType) => {
     switch (entityType) {
@@ -124,13 +110,10 @@ const CourseDetail = () => {
     );
   }
 
-  if (!course) {
-    return (
-      <Container className="text-center">
-        <p>Khóa học không tồn tại</p>
-      </Container>
-    );
-  }
+  const handleSubmitReview = () => {
+    // Logic to submit review or navigate to review page
+    navigate(`/test-course/${course.id}`);
+  };
 
   return (
     <Container>
@@ -234,8 +217,14 @@ const CourseDetail = () => {
         ))}
       </Row>
 
-      {user && user.userRole === 'ROLE_STUDENT' && (
-        <Certificate userName={user.lastName + user.firstName} courseTitle={course.title} progress={progress} countContent={countContent} gpa={gpa} /> // Note: Truyền nguyên đối tượng progress, truyền cái gpa
+      {user && user.userRole === 'ROLE_STUDENT' && register && progress === countContent && countContent > 0 && (
+        <Container className="text-center mb-4">
+          <Button variant="success" onClick={handleSubmitReview}>Thực hiện bài kiểm tra đánh giá kết thúc</Button>
+        </Container>
+      )}
+
+      {user && user.userRole === 'ROLE_STUDENT' && register && (
+        <Certificate />
       )}
     </Container>
   );

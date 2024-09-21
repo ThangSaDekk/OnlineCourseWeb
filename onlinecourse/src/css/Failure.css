@@ -1,0 +1,15 @@
+.failure-container {
+    background-color: #f8d7da; /* Light red background */
+    height: 100vh;
+}
+
+.failure-card {
+    border: none;
+    background-color: #ffffff;
+    padding: 2rem;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.text-danger {
+    color: #dc3545; /* Danger red */
+}

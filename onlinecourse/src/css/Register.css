@@ -1,0 +1,79 @@
+/* Register.css */
+
+.register-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: auto;
+    background-size: cover;
+    margin-bottom: 50px;
+}
+
+.register-form {
+    background: rgba(0, 0, 0, 0.6);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.5);
+    max-width: 500px;
+    width: 100%;
+}
+
+.register-form h1 {
+    font-size: 2.5rem;
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.register-form .form-control {
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    border-radius: 5px;
+    color: white;
+    margin-bottom: 1rem;
+}
+
+.register-form .form-control::placeholder {
+    color: #ddd;
+}
+
+.register-form .btn-block {
+    width: 100%;
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #007bff;
+    border: none;
+    transition: background-color 0.3s ease;
+    color: white;
+}
+
+.register-form .btn-block:hover {
+    background-color: #0056b3;
+    cursor: pointer;
+}
+
+.register-form .form-label {
+    font-size: 1.1rem;
+    color: #ffffff;
+}
+
+.register-form .alert {
+    margin-bottom: 1rem;
+    color: #070707;
+}
+
+.register-form .text-center {
+    color: #ffffff;
+}
+
+.register-form .btn-link {
+    color: #007bff;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.register-form .btn-link:hover {
+    color: #0056b3;
+    text-decoration: underline;
+}

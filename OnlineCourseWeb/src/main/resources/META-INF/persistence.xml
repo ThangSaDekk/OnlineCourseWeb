@@ -13,6 +13,14 @@
     <class>com.group8.websocket.pojo.Process</class>
     <class>com.group8.websocket.pojo.User</class>
     <class>com.group8.websocket.pojo.Invoice</class>
+    <class>com.group8.pojo.Document</class>
+    <class>com.nvt.pojo.Review</class>
+    <class>com.nvt.pojo.Faq</class>
+    <class>com.nvt.pojo.Introduction</class>
+    <class>com.nvt.pojo.Information</class>
+    <class>com.nvt.pojo.Grading</class>
+    <class>com.nvt.pojo.Assignment</class>
+    <class>com.nvt.pojo.Submission</class>
     <exclude-unlisted-classes>false</exclude-unlisted-classes>
     <properties>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://localhost:3306/saledb?zeroDateTimeBehavior=CONVERT_TO_NULL"/>

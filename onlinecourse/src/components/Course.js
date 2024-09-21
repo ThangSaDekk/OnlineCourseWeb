@@ -1,7 +1,7 @@
 import { useContext, useEffect, useState } from "react";
-import { Button, Card, Col, Row, Spinner, Toast, ToastContainer } from "react-bootstrap";
+import { Alert, Button, Card, Col, Row, Spinner, Toast, ToastContainer } from "react-bootstrap";
 import cookie from "react-cookies";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom"; // Import useSearchParams to handle query parameters
 import { MyCartContext, MyUserContext } from "../App";
 import { authAPIs, endpoints } from "../config/APIs";
 import { FaEye, FaShoppingCart, FaSignInAlt } from 'react-icons/fa';
@@ -18,25 +18,34 @@ const Course = () => {
   const [toastMessage, setToastMessage] = useState("");
   const [toastBgColor, setToastBgColor] = useState("");
   const [loading, setLoading] = useState(true);
+  const [searchParams] = useSearchParams(); // Get the URL query parameters
 
   const user = useContext(MyUserContext);
   const navigate = useNavigate();
 
+  // Function to load courses based on cateId
   const loadCourses = async () => {
     try {
-      const url = `${endpoints['courses']}`;
+      const cateId = searchParams.get("cateId"); // Get cateId from the query params
+      let url = `${endpoints['courses']}`;
+      if (cateId) {
+        url += `?cateId=${cateId}`; // Append cateId to the API URL if present
+      }
       const res = await authAPIs().get(url);
       setCourses(res.data);
-      setLoading(false);
+      setTimeout(() => {
+        setLoading(false);
+      }, 500);
+    
     } catch (ex) {
       console.error(ex);
-    } 
-  }
+    }
+  };
 
   useEffect(() => {
     setLoading(true);
     loadCourses();
-  }, [user]);
+  }, [user, searchParams]); 
 
   const order = (c) => {
     let cart = cookie.load("cart") || {};
@@ -58,7 +67,7 @@ const Course = () => {
       setToastBgColor("bg-success");
       setShowToast(true);
     }
-  }
+  };
 
   if (loading) {
     return (
@@ -71,55 +80,61 @@ const Course = () => {
   return (
     <>
       <Row className="p-5">
-        {courses.map(c => {
-          const imgSrc = c.img || DEFAULT_IMAGE;
-          return (
-            <Col className="p-2" key={c.id} md={4} xs={12}>
-              <Card className="course-card">
-                <Card.Img
-                  variant="top"
-                  src={imgSrc}
-                  style={{ width: "100%", height: "auto", objectFit: "contain" }} 
-                  alt={c.title}
-                />
-                <Card.Body>
-                  <Card.Title>{c.title}</Card.Title>
-                  <Card.Text className="course-description">{c.description}</Card.Text>
-                  <Card.Text>{c.price.toLocaleString("en")} VNĐ</Card.Text>
-                  <div className="button-group">
-                    {c.register ? (
-                      <Button variant="primary" onClick={() => navigate(`/courses/${c.id}`)}>
-                        Xem chi tiết <FaEye className="icon" />
-                      </Button>
-                    ) : (
-                      <>
-                        {user && user.userRole === 'ROLE_STUDENT' ? (
-                          <>
-                            <Button variant="danger" onClick={() => order(c)}>
-                              Đặt hàng <FaShoppingCart className="icon" />
-                            </Button>
-                            <Button variant="primary" onClick={() => navigate(`/courses/${c.id}`)}>
-                              Xem chi tiết <FaEye className="icon" />
-                            </Button>
-                          </>
-                        ) : (
-                          <>
-                            <Button variant="success" onClick={() => navigate("/login")}>
-                              Đăng nhập <FaSignInAlt className="icon" />
-                            </Button>
-                            <Button variant="primary" onClick={() => navigate(`/courses/${c.id}`)}>
-                              Xem chi tiết <FaEye className="icon" />
-                            </Button>
-                          </>
-                        )}
-                      </>
-                    )}
-                  </div>
-                </Card.Body>
-              </Card>
-            </Col>
-          );
-        })}
+        {courses.length > 0 ? (
+          courses.map(c => {
+            const imgSrc = c.img || DEFAULT_IMAGE;
+            return (
+              <Col className="p-2" key={c.id} md={4} xs={12}>
+                <Card className="course-card">
+                  <Card.Img
+                    variant="top"
+                    src={imgSrc}
+                    style={{ width: "100%", height: "auto", objectFit: "contain" }} 
+                    alt={c.title}
+                  />
+                  <Card.Body>
+                    <Card.Title>{c.title}</Card.Title>
+                    <Card.Text className="course-description">{c.description}</Card.Text>
+                    <Card.Text>{c.price.toLocaleString("en")} VNĐ</Card.Text>
+                    <div className="button-group">
+                      {c.register ? (
+                        <Button variant="primary" onClick={() => navigate(`/courses/${c.id}`)}>
+                          Xem chi tiết <FaEye className="icon" />
+                        </Button>
+                      ) : (
+                        <>
+                          {user && user.userRole === 'ROLE_STUDENT' ? (
+                            <>
+                              <Button variant="danger" onClick={() => order(c)}>
+                                Đặt hàng <FaShoppingCart className="icon" />
+                              </Button>
+                              <Button variant="primary" onClick={() => navigate(`/courses/${c.id}`)}>
+                                Xem chi tiết <FaEye className="icon" />
+                              </Button>
+                            </>
+                          ) : (
+                            <>
+                              <Button variant="success" onClick={() => navigate("/login")}>
+                                Đăng nhập <FaSignInAlt className="icon" />
+                              </Button>
+                              <Button variant="primary" onClick={() => navigate(`/courses/${c.id}`)}>
+                                Xem chi tiết <FaEye className="icon" />
+                              </Button>
+                            </>
+                          )}
+                        </>
+                      )}
+                    </div>
+                  </Card.Body>
+                </Card>
+              </Col>
+            );
+          })
+        ) : (
+          <Col xs={12}>
+            <Alert variant="warning">Danh mục này không có khóa học nào !!</Alert>;
+          </Col>
+        )}
       </Row>
 
       <ToastContainer className="custom-toast position-fixed top-0 start-50 translate-middle-x">
@@ -135,6 +150,6 @@ const Course = () => {
       </ToastContainer>
     </>
   );
-}
+};
 
 export default Course;

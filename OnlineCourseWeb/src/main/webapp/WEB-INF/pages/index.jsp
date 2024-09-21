@@ -9,7 +9,7 @@
 <c:if test="${param.lang == 'en'}">
     <fmt:setLocale value="en_US"/>
 </c:if>
-<fmt:setBundle basename="com.group8.lang.index" var="bnd"/>
+<fmt:setBundle basename="com.nvt.lang.index" var="bnd"/>
 <div class="content-wrapper" style="overflow-y: auto; padding: 10px;">
 
     <!-- Main content -->
@@ -168,15 +168,11 @@
                 <!-- ./col -->
             </div>
             <div class="row">
-                <div class="col-lg-3 col-6">
+                <div class="col-lg-12 col-6">
                     <!-- small box -->
                     <div class="small-box bg-gradient-orange">
                         <div class="inner">
-                            <h3>65</h3>
                             <p><fmt:message bundle="${bnd}" key="unique.visitors"/></p>
-                        </div>
-                        <div class="icon">
-                            <i class="ion ion-pie-graph"></i>
                         </div>
                         <a href="#" class="small-box-footer">
                             <fmt:message bundle="${bnd}" key="more.info"/> <i class="fas fa-arrow-circle-right"></i>

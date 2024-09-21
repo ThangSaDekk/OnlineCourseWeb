@@ -27,10 +27,13 @@
         <div class="container-fluid">
             <div class="row mb-2">
                 <div class="col-sm-6">
+
                     <div class="card-body clearfix float-sm-left">
-                        <a href="<c:url value='/instructor/add-up'/>" class="btn btn-lg btn-success float-right mr-5" style="font-size: 1.25rem;">
-                            <i class="fas fa-plus p-2"></i> <b>Add Instructor</b>
+                        <a href="<c:url value='/instructor/add-up'/>" class="btn btn-sm btn-success float-left p-3">
+                            <i class="fas fa-plus-circle"></i> <!-- Bi?u t??ng thêm n?i dung -->
                         </a>
+
+
                     </div>
                 </div><!-- /.col -->
                 <div class="col-sm-6">
@@ -60,17 +63,12 @@
         <div class="card-body">
             <form method="GET" action="<c:url value='/instructor'/>">
                 <div class="row mb-3">
-                    <div class="col-md-6">
+                    <div class="col-md-5">
                         <label for="kw">Search by Expertise</label> <!-- Label in English -->
                         <input type="text" name="kw" id="kw" class="form-control" placeholder="Search by expertise..." value="${param.kw}">
                     </div>
 
-
-                </div>
-                <div class="row mb-3">
-
-
-                    <div class="col-md-3">
+                    <div class="col-md-4">
                         <label for="userId">Instructor</label>
                         <select name="userId" id="instructorId" class="form-control">
                             <option value="">All Instructors</option>
@@ -86,6 +84,7 @@
                         <button type="submit" class="btn btn-primary btn-block">Filter</button>
                     </div>
                 </div>
+
             </form>
 
         </div>

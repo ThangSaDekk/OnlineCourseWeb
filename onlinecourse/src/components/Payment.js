@@ -64,7 +64,7 @@ const Payment = () => {
     };
 
     const startWebSocket = (requestId) => {
-        const socket = new WebSocket('ws://localhost:8080/OnlineCourseWeb/ws');
+        const socket = new WebSocket('ws://localhost:8081/ws');
         setSocket(socket);
 
         const interval = setInterval(() => {
@@ -96,12 +96,18 @@ const Payment = () => {
 
         socket.onmessage = (event) => {
             console.log('Tin nhắn từ máy chủ:', event.data);
-            if (event.data === 'Transaction Sucess') {
+            if (event.data === 'Transaction Success') {
                 clearInterval(interval);
                 clearTimeout(timeout);
                 cookie.remove('cart');
                 cartDispatch({ type: "reset" });
                 navigate('/success');
+                socket.close();
+            }
+            if (event.data === 'Transaction Canceled') {
+                clearInterval(interval);
+                clearTimeout(timeout);
+                navigate('/failure');
                 socket.close();
             }
         };

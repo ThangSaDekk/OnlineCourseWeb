@@ -8,8 +8,9 @@
 <html>
     <head>
         <meta charset="utf-8">
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-        <title>AdminLTE 3 | Dashboard</title>
+        <title><tiles:insertAttribute name="title" /></title>
 
         <!-- Google Font: Source Sans Pro -->
         <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -118,62 +119,9 @@
 // Bắt đầu kiểm tra thời gian không hoạt động sau 1 phút
             setTimeout(checkInactivity, 2 * 60 * 1000);
         </script>
+      <!-- Delete Instructor -->
         <script>
-            function deleteCourse(endpoint, courseId) {
-                var username = '<sec:authentication property="principal.username"/>';
-                var password = prompt("Vui lòng nhập mật khẩu để xóa khóa học:");
-                if (password === null) {
-                    alert("Xóa khóa học không hợp lệ.");
-                    return;
-                }
-
-                // Gọi API để xác thực và nhận token
-                fetch('/OnlineCourseWeb/api/login/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({username: username, password: password})
-                }).then(res => res.text())
-                        .then(token => {
-                            if (token !== null) {
-                                if (confirm("Bạn chắc chắn xóa không?") === true) {
-                                    fetch(endpoint, {
-                                        method: "DELETE",
-                                        headers: {
-                                            'Authorization': token
-                                        }
-                                    }).then(res => {
-                                        if (res.status === 204) {
-                                            let d = document.getElementById(courseId);
-                                            if (d) {
-                                                d.style.display = "none"; // Ẩn phần tử
-                                                alert("Xóa thành công !!");
-
-                                            } else {
-                                                alert("Không tìm thấy khóa học để xóa!");
-                                            }
-                                        } else {
-                                            alert("Xóa không thành công!");
-                                        }
-                                    }).catch(error => {
-                                        console.error('Error:', error);
-                                        alert("Đã xảy ra lỗi trong quá trình xóa!");
-                                    });
-                                }
-                            } else {
-                                alert("Tên đăng nhập hoặc mật khẩu không chính xác.");
-                            }
-                        }).catch(error => {
-                    console.error('Error:', error);
-                    alert("Đã xảy ra lỗi trong quá trình xác thực!");
-                });
-            }
-        </script>
-
-        <---<!-- Delete Instructor -->
-        <script>
-            function deleteUserInstructor(endpoint, instructorId) {
+            function deleteElement(endpoint) {
                 var username = '<sec:authentication property="principal.username"/>';
                 var password = prompt("Vui lòng nhập mật khẩu để xóa giảng viên:");
                 if (password === null) {
@@ -219,57 +167,9 @@
             }
         </script>
 
-        <script>
-            function deleteContent(endpoint, elementId) {
-                var username = '<sec:authentication property="principal.username"/>';
-                var password = prompt("Vui lòng nhập mật khẩu để xóa nội dung:");
-                if (password === null) {
-                    alert("Xóa nội dung không hợp lệ.");
-                    return;
-                }
-
-                // Gọi API để xác thực và nhận token
-                fetch('/OnlineCourseWeb/api/login/', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({username: username, password: password})
-                }).then(res => res.text())
-                        .then(token => {
-                            if (token !== null) {
-                                if (confirm("Bạn chắc chắn xóa không?") === true) {
-                                    fetch(endpoint, {
-                                        method: "DELETE",
-                                        headers: {
-                                            'Authorization': token
-                                        }
-                                    }).then(res => {
-                                        if (res.status === 204) {
-                                            let element = document.getElementById(elementId);
-                                            if (element) {
-                                                element.style.display = "none"; // Ẩn phần tử
-                                                alert("Xóa nội dung thành công!");
-                                            } else {
-                                                alert("Không tìm thấy nội dung để xóa!");
-                                            }
-                                        } else {
-                                            alert("Xóa nội dung không thành công!");
-                                        }
-                                    }).catch(error => {
-                                        console.error('Error:', error);
-                                        alert("Đã xảy ra lỗi trong quá trình xóa nội dung!");
-                                    });
-                                }
-                            } else {
-                                alert("Tên đăng nhập hoặc mật khẩu không chính xác.");
-                            }
-                        }).catch(error => {
-                    console.error('Error:', error);
-                    alert("Đã xảy ra lỗi trong quá trình xác thực!");
-                });
-            }
-        </script>
+      
+        
+        
 
     </body>
 </html>

@@ -12,65 +12,101 @@
     </definition>
     <definition name="login" template="/WEB-INF/pages/login.jsp">
     </definition>
+    
     <definition name="403" template="/WEB-INF/pages/403.jsp">
     </definition>
-     <definition name="chart" extends="baseLayout">
+    
+    <definition name="chart" extends="baseLayout">
         <put-attribute name="title" value="Thống kê" />
         <put-attribute name="content" value="/WEB-INF/pages/chartStats.jsp" />
     </definition>
+    
+    <definition name="assignment" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý bài tập" />
+        <put-attribute name="content" value="/WEB-INF/pages/assignments.jsp" />
+    </definition>
+    
+    <definition name="review" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý đánh giá" />
+        <put-attribute name="content" value="/WEB-INF/pages/reviews.jsp" />
+    </definition>
+    
+    <definition name="faq" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý faq" />
+        <put-attribute name="content" value="/WEB-INF/pages/faqs.jsp" />
+    </definition>
+    
+    <definition name="process" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý tiến trình" />
+        <put-attribute name="content" value="/WEB-INF/pages/process.jsp" />
+    </definition>
+    
+    <definition name="student" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý học viên" />
+        <put-attribute name="content" value="/WEB-INF/pages/students.jsp" />
+    </definition>
+    
+    <definition name="category" extends="baseLayout">
+        <put-attribute name="title" value="Quản lý danh mục" />
+        <put-attribute name="content" value="/WEB-INF/pages/categories.jsp" />
+    </definition>
+    
+    <definition name="add-up-category" extends="baseLayout">
+        <put-attribute name="title" value="Thêm sửa danh mục" />
+        <put-attribute name="content" value="/WEB-INF/pages/addUpCategory.jsp" />
+    </definition>
+    
     <definition name="add-up-content" extends="baseLayout">
         <put-attribute name="title" value="Thêm sửa nội dung khóa học" />
         <put-attribute name="content" value="/WEB-INF/pages/addUpContent.jsp" />
     </definition>
+    
     <definition name="content" extends="baseLayout">
         <put-attribute name="title" value="Danh sách nội dung khóa học" />
         <put-attribute name="content" value="/WEB-INF/pages/content.jsp" />
     </definition>
+    
     <definition name="add-up-course" extends="baseLayout">
         <put-attribute name="title" value="Thêm và cập nhật khóa học" />
         <put-attribute name="content" value="/WEB-INF/pages/addUpCourse.jsp" />
     </definition>
+    
     <definition name="course" extends="baseLayout">
         <put-attribute name="title" value="Danh sách khóa học" />
         <put-attribute name="content" value="/WEB-INF/pages/course.jsp" />
     </definition>
+    
     <definition name="enrollment" extends="baseLayout">
-        <put-attribute name="titles" value="Danh sách đăng ký khóa học"/>
+        <put-attribute name="title" value="Danh sách đăng ký khóa học"/>
         <put-attribute name="content" value="/WEB-INF/pages/enrollment.jsp"/>
     </definition>
+    
     <definition name="invoice" extends="baseLayout">
-        <put-attribute name="titles" value="Danh sách hóa đơn"/>
+        <put-attribute name="title" value="Danh sách hóa đơn"/>
         <put-attribute name="content" value="/WEB-INF/pages/invoice.jsp"/>
-    </definition>
-    <definition name="stats" extends="baseLayout">
-        <put-attribute name="titles" value="Thống kê doanh thu"/>
-        <put-attribute name="content" value="/WEB-INF/pages/stats.jsp"/>
     </definition>
     
     <definition name="home" extends="baseLayout">
         <put-attribute name="title" value="Trang chủ" />
         <put-attribute name="content" value="/WEB-INF/pages/index.jsp" />
     </definition>
+    
     <definition name="instructor" extends="baseLayout">
         <put-attribute name="title" value="Danh sách giảng viên" />
         <put-attribute name="content" value="/WEB-INF/pages/instructor.jsp" />
     </definition>
+    
     <definition name="add-up-instructor" extends="baseLayout">
         <put-attribute name="title" value="Thêm và cập nhật khóa học" />
         <put-attribute name="content" value="/WEB-INF/pages/addUpInstructor.jsp" />
     </definition>
+    
     <definition name="invoice-details" extends="baseLayout">
         <put-attribute name="titles" value="Danh sách hóa đơn"/>
         <put-attribute name="content" value="/WEB-INF/pages/invoiceDetails.jsp"/>
     </definition>
-    <definition name="instructor" extends="baseLayout">
-        <put-attribute name="title" value="Trang chủ" />
-        <put-attribute name="content" value="/WEB-INF/pages/instructor.jsp" />
-    </definition>
-    <definition name="add-up-instructor" extends="baseLayout">
-        <put-attribute name="title" value="Trang chủ" />
-        <put-attribute name="content" value="/WEB-INF/pages/addUpInstructor.jsp" />
-    </definition>
+    
+ 
     
     
 </tiles-definitions>

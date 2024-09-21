@@ -1,11 +1,6 @@
-<%-- 
-    Document   : addUpInstructor
-    Created on : Aug 22, 2024, 10:32:36 PM
-    Author     : TAN DAT
---%>
-
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <c:url value='/instructor/add-up' var="action"/>
 <div class="content-wrapper" style="overflow-y: auto;">
     <!-- Content Header (Page header) -->
@@ -73,42 +68,42 @@
 
 
                         <div class="form-group">
-                            <label for="title">First name</label>
+                            <label for="firstName">First name</label>
                             <form:input path="firstName" id="firstName" class="form-control" />
                         </div>
 
                         <div class="form-group">
-                            <label for="title">Last name</label>
+                            <label for="lastName">Last name</label>
                             <form:input path="lastName" id="lastName" class="form-control" />
                         </div>
 
                         <div class="form-group">
-                            <label for="title">Email</label>
+                            <label for="email">Email</label>
                             <form:input path="email" id="email" class="form-control" />
                         </div>
 
                         <div class="form-group">
-                            <label for="title">Phone</label>
+                            <label for="phone">Phone</label>
                             <form:input path="phone" id="phone" class="form-control" />
                         </div>
 
                         <div class="form-group">
-                            <label for="timeExperted">Username</label>
+                            <label for="username">Username</label>
                             <form:input path="username" id="username" class="form-control" />
                         </div>
 
                         <div class="form-group">
-                            <label for="price">Password</label>
+                            <label for="password">Password</label>
                             <form:input path="password" id="password" type="password" class="form-control" />
                         </div>
 
 
                         <div class="form-group">
-                            <label for="price">Expertise</label>
+                            <label for="expertise">Expertise</label>
                             <form:input path="expertise" name="expertise" id="expertise" type="expertise" class="form-control" />
                         </div> 
                         <div class="form-group">
-                            <label for="price">Description</label>
+                            <label for="description">Description</label>
                             <form:input path="description" name="description" id="description" type="description" class="form-control" />
                         </div>
 

@@ -9,7 +9,7 @@
 <c:if test="${param.lang == 'en'}">
     <fmt:setLocale value="en_US"/>
 </c:if>
-<fmt:setBundle basename="com.group8.lang.addUpContent" var="bnd"/>
+<fmt:setBundle basename="com.nvt.lang.addUpContent" var="bnd"/>
 <div class="content-wrapper" style="overflow-y: auto;">
     <!-- Content Header (Page header) -->
     <section class="content-header">
@@ -34,16 +34,6 @@
 
     <!-- Main content -->
     <section class="content">
-        <c:if test="${not empty errMsg}">
-            <div class="alert alert-danger">
-                ${errMsg}
-            </div>
-        </c:if>
-        <c:if test="${not empty successMsg}">
-            <div class="alert alert-success">
-                ${successMsg}
-            </div>
-        </c:if>
         <div>
             <div class="card card-primary">
                 <div class="card-header">

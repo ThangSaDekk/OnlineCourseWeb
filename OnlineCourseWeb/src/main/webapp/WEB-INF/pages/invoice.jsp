@@ -1,12 +1,8 @@
-<%-- 
-    Document   : invoice
-    Created on : Aug 24, 2024, 3:15:20 PM
-    Author     : TAN DAT
---%>
 
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
+<%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <c:set var="baseUrl" value="?kw=${param.kw}&status=${param.status}" />
 
 <div class="content-wrapper" style="overflow-y: auto;">
@@ -97,11 +93,14 @@
                                 <td>${invoice.payerEmail}</td>
                                 <td>
                                     <c:choose>
-                                        <c:when test="${invoice.status == false}">
-                                            <span class="badge badge-primary">NOT_YET</span>
+                                        <c:when test="${invoice.status == 'PENDING'}">
+                                            <span class="badge badge-warning">PENDING</span>
                                         </c:when>
-                                        <c:when test="${invoice.status == true}">
-                                            <span class="badge badge-success">PAID</span>
+                                        <c:when test="${invoice.status == 'CANCELED'}">
+                                            <span class="badge badge-danger">CANCELED</span>
+                                        </c:when>
+                                        <c:when test="${invoice.status == 'SUCCESS'}">
+                                            <span class="badge badge-success">SUCCESS</span>
                                         </c:when>
                                     </c:choose>
                                 </td>

@@ -44,7 +44,11 @@
         </div><!-- /.container-fluid -->
     </div>
 
-
+    <c:if test="${not empty successMsg}">
+        <div class="alert alert-success container">
+            ${successMsg}
+        </div>
+    </c:if>
     <!-- Modal -->
     <div class="modal fade bd-example-modal-xl" tabindex="-1" role="dialog" aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-xl" role="document">
@@ -126,8 +130,7 @@
                     <i class="fas fa-edit"></i> <!-- Edit icon -->
                 </a>
                 <c:url value="/api/courses/${item.courseId}/content/${item.id}" var="cD" />
-                <c:url value="content${item.id}" var="cE" />
-                <a href="#" onclick="deleteContent('${cD}', '${cE}')" class="btn btn-link text-danger" style="position: absolute; right: 10px; bottom: 10px;" onclick="return confirm('Are you sure you want to delete this content?');">
+                <a href="#" onclick="deleteElement('${cD}')" class="btn btn-link text-danger" style="position: absolute; right: 10px; bottom: 10px;" onclick="return confirm('Are you sure you want to delete this content?');">
                     <i class="fas fa-trash"></i> <!-- Delete icon -->
                 </a>
             </div>

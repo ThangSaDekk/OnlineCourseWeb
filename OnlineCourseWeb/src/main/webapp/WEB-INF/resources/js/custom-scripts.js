@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 setTimeout(function () {
                     alert.style.display = 'none';
                 }, 500);
-            }, 5000);
+            }, 10000);
         }
     }
 

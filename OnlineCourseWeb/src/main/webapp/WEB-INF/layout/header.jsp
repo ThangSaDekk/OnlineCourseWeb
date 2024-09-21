@@ -36,32 +36,7 @@
                 </form>
             </div>
         </li>
-<!--        <li class="nav-item dropdown">
-            <a class="nav-link" data-toggle="dropdown" href="#">
-                <i class="far fa-bell"></i>
-                <span class="badge badge-warning navbar-badge">15</span>
-            </a>
-            <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                <span class="dropdown-item dropdown-header">15 Notifications</span>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-envelope mr-2"></i> 4 new messages
-                    <span class="float-right text-muted text-sm">3 mins</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-users mr-2"></i> 8 friend requests
-                    <span class="float-right text-muted text-sm">12 hours</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item">
-                    <i class="fas fa-file mr-2"></i> 3 new reports
-                    <span class="float-right text-muted text-sm">2 days</span>
-                </a>
-                <div class="dropdown-divider"></div>
-                <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
-            </div>
-        </li>-->
+
         <li class="nav-item">
             <a class="nav-link" data-widget="fullscreen" href="#" role="button">
                 <i class="fas fa-expand-arrows-alt"></i>
@@ -118,13 +93,20 @@
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link">
-                        <i class="nav-icon fas fa-table"></i>
+                        <i class="nav-icon fas fa-list"></i>
                         <p>
-                            Tables
+                            Manager
                             <i class="fas fa-angle-left right"></i>
                         </p>
                     </a>
                     <ul class="nav nav-treeview">
+                         <!-- Ch?a làm -->
+                        <li class="nav-item">
+                            <a href="<c:url value="/categories"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Category</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<c:url value="/courses"/>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
@@ -137,16 +119,51 @@
                                 <p>Instructor</p>
                             </a>
                         </li>
+                         <!-- Ch?a làm -->
+                        <li class="nav-item">
+                            <a href="<c:url value="/students"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Student</p>
+                            </a>
+                        </li>
                         <li class="nav-item">
                             <a href="<c:url value="/enrollments"/>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
-                                <p>Enrollmet</p>
+                                <p>Enrollment</p>
+                            </a>
+                        </li>
+                        <!-- Ch?a làm -->
+                        <li class="nav-item">
+                            <a href="<c:url value="/processes"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Process</p>
                             </a>
                         </li>
                         <li class="nav-item">
                             <a href="<c:url value="/invoice"/>" class="nav-link">
                                 <i class="far fa-circle nav-icon"></i>
                                 <p>Invoice</p>
+                            </a>
+                        </li>
+                         <!-- Ch?a làm -->
+                        <li class="nav-item">
+                            <a href="<c:url value="/reviews"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Review</p>
+                            </a>
+                        </li>
+                          <!-- Ch?a làm -->
+                        <li class="nav-item">
+                            <a href="<c:url value="/faqs"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>faq</p>
+                            </a>
+                        </li>
+                              <!-- Ch?a làm -->
+                        <li class="nav-item">
+                            <a href="<c:url value="/introductions"/>" class="nav-link">
+                                <i class="far fa-circle nav-icon"></i>
+                                <p>Introduction</p>
                             </a>
                         </li>
 

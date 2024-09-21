@@ -9,7 +9,7 @@
 <c:if test="${param.lang == 'en'}">
     <fmt:setLocale value="en_US"/>
 </c:if>
-<fmt:setBundle basename="com.group8.lang.login" var="bnd"/>
+<fmt:setBundle basename="com.nvt.lang.login" var="bnd"/>
 <!DOCTYPE html>
 <html>
     <head>

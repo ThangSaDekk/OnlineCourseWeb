@@ -7,7 +7,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 
-<div class="content-wrapper" style="overflow-y: auto;">
+<div class="content-wrapper " style="overflow-y: auto;">
     <!-- Content Header (Page header) -->
     <div class="content-header">
         <div class="container-fluid">
@@ -27,19 +27,19 @@
         </div><!-- /.container-fluid -->
     </div>
     <!-- /.content-header -->
-    <section class="content">
+    <section class="content ">
         <div class="container-fluid">
             <div class="row">
                 <div class="col-12">
                     <!-- Main content -->
-                    <div class="invoice p-3 mb-3">
+                    <div class="invoice p-3 mb-3 bg-gradient-lightblue shadow-sm">
                         <c:set var="currentDate" value="<%= new java.util.Date()%>" />
                         <!-- title row -->
                         <div class="row">
                             <div class="col-12">
                                 <h4>
-                                    <i class="fas fa-globe"></i> CourseOnline, Inc.
-                                    <small class="float-right">Date: <fmt:formatDate value="${currentDate}" pattern="yyyy-MM-dd"/></small>
+                                    <i class="fas fa-address-book"></i> CourseOnline.Co
+                                    <small class="float-right">Date: <fmt:formatDate value="${currentDate}" pattern="dd-MM-yyyy"/></small>
                                 </h4>
                             </div>
                             <!-- /.col -->
@@ -52,54 +52,41 @@
                             <c:set var="currentInvoiceNumber" value="" />
                             <c:set var="currentPayerPhone" value="" />
                             <c:set var="currentPayerName1" value="" />
-                            <div class="col-sm-4 invoice-col">
-                                From
-                                <address>
-                                    <strong>Admin</strong><br>
-                                    Phone: 0941265205<br>
-                                    Email: 2151050087dat@ou.edu.vn<br>
-                                    Address: Le Van Luong, Phuoc Kien<br>
-                                    Nha Be, TP Ho Chi Minh<br>
-                                </address>
-                            </div>
+                       
                             <!-- /.col -->
                             <div class="col-sm-4 invoice-col">
-                                To
+                                <h4><strong>Information Payer</strong></h4>
                                 <address>
                                     <c:forEach var="dto" items="${enrollmentDTOs}">
                                         <c:if test="${dto.payerName != currentPayerName}">
-                                            <strong>${dto.payerName}</strong><br>
+                                            <u>Full Name:</u> ${dto.payerName}<br>
                                             <c:set var="currentPayerName" value="${dto.payerName}" />
                                         </c:if>
 
                                         <c:if test="${dto.payerPhone != currentPayerPhone}">
-                                            Phone: ${dto.payerPhone}<br>
+                                            <u>Phone:</u> ${dto.payerPhone}<br>
                                             <c:set var="currentPayerPhone" value="${dto.payerPhone}" />
                                         </c:if>
                                         <c:if test="${dto.payerEmail != currentPayerEmail}">
-                                            Email: ${dto.payerEmail}<br>
+                                            <u>Email:</u> ${dto.payerEmail}<br>
                                             <c:set var="currentPayerEmail" value="${dto.payerEmail}" />
                                         </c:if>
                                     </c:forEach>
-                                    Address: Le Van Luong, Phuoc Kien<br>
-                                    Nha Be, TP Ho Chi Minh<br>
+                            
                                 </address>
                             </div>
                             <!-- /.col -->
-                            <div class="col-sm-4 invoice-col">
+                            <div class="col-sm-8     invoice-col">
+                                <h4><strong>Information Payment</strong></h4>
                                 <c:forEach var="dto" items="${enrollmentDTOs}">
                                     <c:if test="${dto.referenceCode != currentInvoiceNumber}">
-                                        <strong>Invoice Number: </strong>${dto.referenceCode}<br>
+                                        <u>Invoice Number:</u> ${dto.referenceCode}<br>
                                         <c:set var="currentInvoiceNumber" value="${dto.referenceCode}" />
-                                    </c:if>
-                                    <c:if test="${dto.payerName != currentPayerName1}">
-                                        <strong>PayerName: </strong>${dto.payerName}<br>
-                                        <c:set var="currentPayerName1" value="${dto.payerName}" />
                                     </c:if>
 
                                 </c:forEach>
-                                <b>Payment Due:</b> <fmt:formatDate value="${currentDate}" pattern="yyyy-MM-dd"/><br>
-
+                               <u>Payment Due:</u> <fmt:formatDate value="${currentDate}" pattern="dd-MM-yyyy"/><br>
+                                
                             </div>
                             <!-- /.col -->
                         </div>
@@ -122,14 +109,14 @@
                                             </tr>
                                         </thead>
                                         <tbody>
+                                        <h3><strong>Details Invoice</strong></h3>
                                             <c:forEach var="dto" items="${enrollmentDTOs}">
                                                 <tr>                                            
                                                     <td>${dto.payerName}</td>
                                                     <td>${dto.payerEmail}</td>
-                                                    <td>${dto.userId.firstName}${dto.userId.lastName}</td>
-                                                    
+                                                    <td>${dto.userId.firstName} ${dto.userId.lastName}</td>                                            
                                                     <td>${dto.courseId.title}</td>
-                                                    <td>${dto.courseId.price}</td>
+                                                    <td>${dto.courseId.price} VND</td>
                                                     <td>${dto.createdDate}</td>
                                                 </tr>
                                             </c:forEach>
@@ -147,18 +134,13 @@
                         <div class="row">
                             <!-- accepted payments column -->
                             <div class="col-6">
-                                <p class="lead">Payment Methods:</p>
-                                <img src="../../dist/img/credit/visa.png" alt="Visa">
-                                <img src="../../dist/img/credit/mastercard.png" alt="Mastercard">
-                                <img src="../../dist/img/credit/american-express.png" alt="American Express">
-                                <img src="../../dist/img/credit/paypal2.png" alt="Paypal">
-
-
+              
+                             
                             </div>
                             <!-- /.col -->
                             <div class="col-6">
 
-                                <p class="lead">Amount Due: <fmt:formatDate value="${currentDate}" pattern="yyyy-MM-dd"/></p>
+                                <p class="lead">Amount Due: <fmt:formatDate value="${currentDate}" pattern="dd-MM-yyyy"/></p>
 
                                 <div class="table-responsive">
                                     <c:set var="currentTotalAmount" value="" />
@@ -169,7 +151,7 @@
                                             <c:if test="${dto.totalAmount != currentTotalAmount}">
                                                 <tr>
                                                     <th style="width:50%">Total:</th>
-                                                    <td>${dto.totalAmount}</td>
+                                                    <td>${dto.totalAmount} VND</td>
                                                 </tr>
 
                                                 <c:set var="currentTotalAmount" value="${dto.totalAmount}" />

@@ -1,16 +1,44 @@
-import React, { useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import '../css/Certificate.css';
-import { Button, Card } from 'react-bootstrap';
+import '../css/Spinner.css';
+import { Button, Card, Spinner } from 'react-bootstrap';
 import html2canvas from 'html2canvas';
+import { useParams } from 'react-router';
+import { authAPIs, endpoints } from '../config/APIs';
 
-const Certificate = ({ courseTitle, userName, progress, countContent, gpa }) => {
+const Certificate = () => {
     const certificateRef = useRef();
+    const { id } = useParams(); // Lấy id enrollment từ URL
+    const [loading, setLoading] = useState(true);
+    const [fullName, setFullName] = useState("");
+    const [title, setTitle] = useState("");
+    const [grade, setGrade] = useState("");
+    const [status, setStatus] = useState("");
+
+    useEffect(() => {
+        const fetchEnrollment = async () => {
+            try {
+                setLoading(true);
+                const response = await authAPIs().get(endpoints['enrollment'](id));
+                setFullName(response.data.userId.lastName + " " + response.data.userId.firstName);
+                setTitle(response.data.courseId.title);  
+                setGrade(response.data.grade);
+                setStatus(response.data.status);
+            } catch (error) {
+                console.error('Error fetching enrollment data:', error);
+            }finally{
+                setLoading(false);
+            }
+        };
+
+        fetchEnrollment();
+    }, [id]);
 
     const clickPrint = () => {
-        if (progress !== countContent) {
-            alert("Có vẻ bạn chưa hoàn thành hết khóa học.");
+        if (status !== "COMPLETED") {
+            alert('Chứng chỉ chưa hoàn thành. Không thể in.');
             return;
-        }
+        };
 
         html2canvas(certificateRef.current, {
             backgroundColor: '#ffffff',
@@ -19,7 +47,7 @@ const Certificate = ({ courseTitle, userName, progress, countContent, gpa }) => 
         }).then(canvas => {
             const imgData = canvas.toDataURL('image/png');
 
-            // Create a link element and trigger the download
+            // Tạo một link element để tải file
             const link = document.createElement('a');
             link.href = imgData;
             link.download = 'certificate.png';
@@ -28,6 +56,14 @@ const Certificate = ({ courseTitle, userName, progress, countContent, gpa }) => 
             console.error('Error generating PNG:', error);
         });
     };
+
+    if (loading) {
+        return (
+            <div className="spinner-container">
+              <Spinner animation="grow" variant="primary" className="spinner-lg" />
+            </div>
+          );
+    }
 
     return (
         <>
@@ -40,13 +76,13 @@ const Certificate = ({ courseTitle, userName, progress, countContent, gpa }) => 
             <div className='certificateContainer' ref={certificateRef}>
                 <img src='https://res.cloudinary.com/dh1irfap0/image/upload/v1725455598/Untitled_design_jidaet.png' height={'auto'} width={'80%'} alt="Certificate Background" />
                 <div className='contentCertificate'>
-                    <h1>{userName}</h1>
+                    <h1>{fullName}</h1>
                 </div>
                 <div className='contentCertificate'>
-                    <h2>{courseTitle}</h2>
+                    <h2>{title}</h2>
                 </div>
                 <div className='contentCertificate'>
-                    <h3>{gpa}</h3>
+                    <h3>{grade}</h3>
                 </div>
             </div>
 

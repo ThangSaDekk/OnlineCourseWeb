@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  tomcat:
+    image: tomcat:9.0.91-jdk17-temurin-jammy
+    container_name: onlinecourseweb
+    ports:
+      - "8081:8080"
+    volumes:
+      - ./target/OnlineCourseWeb-1.0-SNAPSHOT.war:/usr/local/tomcat/webapps/ROOT.war
+    depends_on:
+      - mysql
+    networks:
+      - backend
+
+  mysql:
+    image: mysql:8.0.18 
+    container_name: mysql-onlinecourseweb
+    environment:
+      MYSQL_USER: thang
+      MYSQL_PASSWORD: thang123  
+      MYSQL_ROOT_PASSWORD: thang123
+      MYSQL_DATABASE: onlinecourse1
+    ports:
+      - "3308:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - mysql-config:/etc/mysql/conf.d
+    networks:
+      - backend
+
+networks:
+  backend:
+    name: onlinecourseweb-network
+
+volumes:
+  mysql-data:
+  mysql-config:

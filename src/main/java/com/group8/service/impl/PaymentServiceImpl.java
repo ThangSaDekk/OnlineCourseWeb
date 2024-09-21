@@ -1,0 +1,168 @@
+package com.group8.service.impl;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.group8.dto.PaymentDTO;
+import com.group8.pojo.Invoice;
+import com.group8.repository.InvoiceRepository;
+import com.group8.service.PaymentService;
+import java.io.IOException;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+import java.security.NoSuchAlgorithmException;
+import java.util.UUID;
+import java.util.Collections;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+
+@Service
+public class PaymentServiceImpl implements PaymentService {
+
+    private final String momoAccessKey = "F8BBA842ECF85";
+    private final String momoSecretKey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
+    private final String momoPartnerCode = "MOMO";
+    private final String momoRedirectUrl = "/payments/momo/";
+    private final String momoIpnUrl = "/payments/ipn-momo/";
+    private final String momoRequestType = "captureWallet";
+    private final String momoEndpoint = "https://test-payment.momo.vn/v2/gateway/api/create";
+
+    @Autowired
+    private PaymentService paymentService;
+    
+    @Autowired
+    private InvoiceRepository invoiceRepo;
+
+    @Override
+    public ResponseEntity<String> pay(PaymentDTO paymentDTO, HttpServletRequest request) throws Exception {
+        if (paymentDTO == null) {
+            throw new IllegalArgumentException("PaymentDTO must not be null");
+        }
+
+        String requestId = UUID.randomUUID().toString();
+        String orderId = paymentDTO.getPaymentChannel() + requestId;
+        String orderInfo = String.format("pay for %s", paymentDTO.getNameCourses());
+        String amount = String.valueOf(paymentDTO.getTotalAmount());
+        String url = "http://127.0.0.1:8080/OnlineCourseWeb";
+
+        String rawSignature = String.format(
+                "accessKey=%s&amount=%s&extraData=&ipnUrl=%s&orderId=%s&orderInfo=%s&partnerCode=%s&redirectUrl=%s&requestId=%s&requestType=%s",
+                momoAccessKey, amount, url + momoIpnUrl, orderId, orderInfo,
+                momoPartnerCode, url + momoRedirectUrl, requestId, momoRequestType
+        );
+
+        String signature = generateSignature(rawSignature, momoSecretKey);
+
+        HttpHeaders headers = new HttpHeaders();
+        headers.set("Content-Type", "application/json");
+
+        String jsonData = String.format(
+                "{ \"partnerCode\": \"%s\", \"partnerName\": \"Momo Payment\", \"storeId\": \"OnlineCourseView\", \"requestId\": \"%s\", \"amount\": \"%s\", \"orderId\": \"%s\", \"orderInfo\": \"%s\", \"redirectUrl\": \"%s\", \"ipnUrl\": \"%s\", \"lang\": \"vi\", \"extraData\": \"\", \"requestType\": \"%s\", \"signature\": \"%s\" }",
+                momoPartnerCode, requestId, amount, orderId, orderInfo,
+                url + momoRedirectUrl, url + momoIpnUrl,
+                momoRequestType, signature
+        );
+
+        HttpEntity<String> requestEntity = new HttpEntity<>(jsonData, headers);
+        RestTemplate restTemplate = new RestTemplate();
+
+        // Send the request and get the response as a String
+        ResponseEntity<String> response = restTemplate.exchange(momoEndpoint, HttpMethod.POST, requestEntity, String.class);
+
+        return response;
+    }
+
+    @Override
+    public String generateSignature(String rawSignature, String secretKey) throws Exception {
+        try {
+            Mac sha256Hmac = Mac.getInstance("HmacSHA256");
+            SecretKeySpec secretKeySpec = new SecretKeySpec(secretKey.getBytes(), "HmacSHA256");
+            sha256Hmac.init(secretKeySpec);
+            byte[] hash = sha256Hmac.doFinal(rawSignature.getBytes());
+
+            // Trả về dạng hex (giống Python)
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) {
+                    hexString.append('0');
+                }
+                hexString.append(hex);
+            }
+            return hexString.toString();
+
+            // Hoặc trả về dạng Base64 (thay đổi hàm Python để phù hợp)
+            // return Base64.getEncoder().encodeToString(hash);
+        } catch (NoSuchAlgorithmException e) {
+            throw new Exception("Error generating signature", e);
+        }
+    }
+//
+//    @Override
+//    public String getDomainUrl(HttpServletRequest request) throws URISyntaxException {
+//        // Xây dựng URL đầy đủ từ HttpServletRequest
+//        String fullUrl = request.getRequestURL().toString();
+//
+//        // Phân tích URL để lấy scheme và host
+//        URI uri = new URI(fullUrl);
+//
+//        // Trả về domain URL
+//        return String.format("%s://%s", uri.getScheme(), uri.getHost());
+//    }
+
+    
+    @Override
+    public ResponseEntity<Map<String, String>> payWithMoMo(HttpServletRequest request, PaymentDTO paymentDTO) throws Exception {
+        // Gọi dịch vụ thanh toán qua MoMo và nhận lại ResponseEntity<String>
+        ResponseEntity<String> response = paymentService.pay(paymentDTO, request);
+
+        // Kiểm tra nếu phản hồi không thành công
+        if (!response.getStatusCode().is2xxSuccessful()) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Internal server error"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Chuyển đổi chuỗi JSON trả về thành Map sử dụng Jackson ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> data;
+        try {
+            data = objectMapper.readValue(response.getBody(), new TypeReference<Map<String, Object>>() {
+            });
+        } catch (IOException e) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Failed to parse response"), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+
+        // Kiểm tra resultCode từ dữ liệu JSON
+        if ((int) data.get("resultCode") != 0) {
+            return new ResponseEntity<>(Collections.singletonMap("error", "Transaction is not successful"), HttpStatus.BAD_REQUEST);
+        }
+        
+        Invoice invoice = new Invoice();
+        invoice.setCreatedDate(new Date());
+        invoice.setUpdatedDate(new Date());
+        invoice.setStatus(Boolean.FALSE);
+        invoice.setReferenceCode((String) data.get("requestId"));
+        invoice.setPayerEmail(paymentDTO.getPayerEmail());
+        invoice.setPayerName(paymentDTO.getPayerName());
+        invoice.setPayerPhone(paymentDTO.getPhone());
+        
+        this.invoiceRepo.addUpInvoice(invoice);
+
+        // Chuẩn bị phản hồi trả về với payment_url và deeplink
+        Map<String, String> responseBody = new HashMap<>();
+        responseBody.put("payment_url", (String) data.get("payUrl"));
+  
+
+        return new ResponseEntity<>(responseBody, HttpStatus.CREATED);
+    }
+
+}

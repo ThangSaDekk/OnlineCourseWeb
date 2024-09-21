@@ -89,7 +89,7 @@
                             <th>Course</th>
                             <th>Status</th>
                             <th>Enrollment Date</th>
-                            <th>Updated Date</th> <!-- Thêm tiêu ?? c?t -->
+                            <th>Progress</th> <!-- Thêm tiêu ?? c?t -->
                         </tr>
                     </thead>
                     <tbody>
@@ -119,7 +119,7 @@
                                     <fmt:formatDate value="${enrollment.createdDate}" pattern="dd-MM-yyyy hh:mm:ss" />
                                 </td>
                                 <td>
-                                    ${enrollment.progress}
+                                        ${enrollment.progress} Content
                                 </td>
                             </tr>
                         </c:forEach>

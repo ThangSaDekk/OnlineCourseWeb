@@ -1,6 +1,6 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-<footer class="main-footer" style="background-color: #343a40; color: #ffffff; padding: 20px; text-align: center;">
+<footer class="main-footer" style="background-color: #343a40; color: #ffffff; padding: 30px; text-align: center;">
     <div style="margin-bottom: 10px;">
         <strong>Empowering Education for a Brighter Future &copy; 2024 <a href="<c:url value="/"/>" style="color: #ffc107;">Online Course</a>.</strong>
         All rights reserved.

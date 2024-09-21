@@ -4,7 +4,9 @@ body {
     'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
     sans-serif;
   -webkit-font-smoothing: antialiased;
-  background: url('./components/resource/img/baner.jpg');
+  background: url('./assets/background1.png');
+  background-size: cover; 
+  background-position: center; /* Căn giữa hình nền */
   -moz-osx-font-smoothing: grayscale;
 }
 
