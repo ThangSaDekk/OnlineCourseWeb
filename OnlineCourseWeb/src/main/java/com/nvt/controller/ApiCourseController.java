@@ -12,6 +12,7 @@ import com.nvt.pojo.Enum.CourseType;
 import com.nvt.pojo.Instructor;
 import com.nvt.service.CourseService;
 import com.nvt.service.EmailService;
+import com.nvt.service.FCMService;
 import com.nvt.service.InstructorService;
 import com.nvt.service.UserService;
 import java.security.Principal;
@@ -46,12 +47,14 @@ public class ApiCourseController {
     
     @Autowired
     private InstructorService instructorService;
+    
+    @Autowired
+    private FCMService fcmService;
   
     @GetMapping("/courses")
     public ResponseEntity<List<CourseDTO>> list(@RequestParam Map<String, String> params, Principal principal) {
         params.put("status", CourseStatus.ACTIVE.name());
         
-       
         return new ResponseEntity<>(this.courseService.getCourseDTO(params, principal), HttpStatus.OK);
     }
     

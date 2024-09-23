@@ -28,6 +28,7 @@ public class CourseDTO {
     private MultipartFile file;
     // todo: check user_id and course_id exits ?
     private boolean isRegister;
+    private String accessToken;
 
     
 }

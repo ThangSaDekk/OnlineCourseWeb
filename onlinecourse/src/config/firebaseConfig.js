@@ -1,6 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from "firebase/app";
 import { getMessaging, getToken } from "firebase/messaging";
+import cookie from "react-cookies";
 
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
@@ -31,7 +32,7 @@ export const generateToken = async() => {
     const token = await getToken(messaging,{
       vapidKey:"BLGuPr-bC2SQVrtngxE5EmYXR4K7nVw-EB8Zw7LFGZWr2S1H8FOsTrUVYzGCOgK8iqGwrphSbD6XZYmRGvkqns8"
     });
-    console.log(token);
+    cookie.save("FCM-token", token);
   }
 
 }

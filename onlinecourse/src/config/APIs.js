@@ -1,7 +1,8 @@
 import axios from "axios"
 import cookie from "react-cookies"
 
-const BASE_URL = 'http://localhost:8081'
+// const BASE_URL = 'http://localhost:8081'
+const BASE_URL = 'https://onlinecourse-3j53.onrender.com'
 
 export const endpoints = {
     'register':'api/users',
@@ -15,7 +16,8 @@ export const endpoints = {
     'enrollment': (id) =>`api/courses/${id}/enrollments`,
     'course-enrollments':(id) => `api/enrollments/${id}`,
     'content-details':(courseId, contentId) => `api/courses/${courseId}/content/${contentId}`,
-    'instructorCourses' : 'api/instructor/courses'
+    'instructorCourses' : 'api/instructor/courses',
+    'google-access-token' : 'api/access-token'
 }
 
 export const authAPIs = () => {
@@ -23,6 +25,15 @@ export const authAPIs = () => {
         baseURL: BASE_URL,
         headers: {
             'Authorization': cookie.load("access-token")
+        }
+    })
+}
+
+export const authFCMTOkens = () => {
+    return axios.create({
+        baseURL: "https://fcm.googleapis.com//v1/projects/coursewebonline-f529a/messages:send",
+        headers: {
+            'Authorization': `Bearer ${cookie.load("google-access-token")}`
         }
     })
 }

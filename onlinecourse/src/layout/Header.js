@@ -47,6 +47,7 @@ const Header = () => {
             ) : (
               <>
                 <Link className='nav-link' to="/">Trang chủ</Link>
+                <Link className='nav-link' to="/about">Về chúng tôi</Link>
                 <NavDropdown title="Danh mục" id="basic-nav-dropdown">
                   {categories.map(c => {
                     const url = `?cateId=${c.id}`;

@@ -10,6 +10,8 @@ import Certificate from './Certificate';
 import '../css/Spinner.css';
 import { useNavigate } from 'react-router-dom';
 
+
+
 const CourseDetail = () => {
   const { id } = useParams();
   const [course, setCourse] = useState(null);
@@ -20,6 +22,7 @@ const CourseDetail = () => {
   const [progress, setProgress] = useState(0);
   const [countContent, setCountContent] = useState(0);
   const [register, setRegister] = useState(false);
+
   useEffect(() => {
     const fetchCourse = async () => {
       try {

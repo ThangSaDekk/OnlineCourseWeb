@@ -163,10 +163,30 @@
             <artifactId>spring-boot-starter-mail</artifactId>
             <version>2.6.3</version>
         </dependency>
+        <dependency>
+            <groupId>com.google.auth</groupId>
+            <artifactId>google-auth-library-oauth2-http</artifactId>
+            <version>1.18.0</version> <!-- Phiên bản chính xác -->
+        </dependency>
+<!--        Hàm encoding của Google-->
+        <dependency>
+            <groupId>com.google.guava</groupId>
+            <artifactId>guava</artifactId>
+            <version>31.1-jre</version> <!-- Kiểm tra phiên bản mới nhất tại Maven Central -->
+        </dependency>
+
+
 
 
 
     </dependencies>
+    <repositories>
+        <repository>
+            <id>google-maven-repo</id>
+            <url>https://maven-central.storage-download.googleapis.com/repos/central/data/</url>
+        </repository>
+    </repositories>
+
 
     <build>
         <plugins>
