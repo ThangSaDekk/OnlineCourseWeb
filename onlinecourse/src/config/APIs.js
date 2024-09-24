@@ -1,8 +1,8 @@
 import axios from "axios"
 import cookie from "react-cookies"
 
-const BASE_URL = 'http://localhost:8081'
-// const BASE_URL = 'https://onlinecourse-3j53.onrender.com'
+// const BASE_URL = 'http://localhost:8081'
+const BASE_URL = 'https://onlinecourse-3j53.onrender.com'
 
 export const endpoints = {
     'register':'api/users',
