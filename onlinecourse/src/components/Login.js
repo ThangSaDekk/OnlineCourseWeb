@@ -17,6 +17,19 @@ const Login = () => {
     const dispatch = useContext(MyDispatchContext);
     const navigate = useNavigate();
 
+    const saveFCMToken =  async(u) =>{
+        try{
+            await APIs.post(endpoints['save-fcm-token'],{
+                "userId": u,
+                "fcmtoken": cookie.load("FCM-token")
+            })
+
+        }catch (ex) {
+            console.error(ex);
+            setErrorMessage("Đã xảy ra lỗi khi xử lý FCMToken. Vui lòng thử lại sau.");
+        } 
+    }
+
 
     const login = async (e) => {
         e.preventDefault();
@@ -44,6 +57,7 @@ const Login = () => {
                 } else if (user.data.userRole === "ROLE_STUDENT") {
                     navigate("/");
                 }
+                saveFCMToken(user.data.id);
             } else {
                 dispatch({ type: "logout" });
                 setErrorMessage("Tài khoản này đã bị khóa. Liên hệ đến onlinecourse@hotro.vn để được hỗ trợ");

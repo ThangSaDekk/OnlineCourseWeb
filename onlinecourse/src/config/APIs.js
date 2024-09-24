@@ -1,8 +1,8 @@
 import axios from "axios"
 import cookie from "react-cookies"
 
-// const BASE_URL = 'http://localhost:8081'
-const BASE_URL = 'https://onlinecourse-3j53.onrender.com'
+const BASE_URL = 'http://localhost:8081'
+// const BASE_URL = 'https://onlinecourse-3j53.onrender.com'
 
 export const endpoints = {
     'register':'api/users',
@@ -17,7 +17,8 @@ export const endpoints = {
     'course-enrollments':(id) => `api/enrollments/${id}`,
     'content-details':(courseId, contentId) => `api/courses/${courseId}/content/${contentId}`,
     'instructorCourses' : 'api/instructor/courses',
-    'google-access-token' : 'api/access-token'
+    'google-access-token' : 'api/access-token',
+    'save-fcm-token': 'api/cfirestore'
 }
 
 export const authAPIs = () => {
